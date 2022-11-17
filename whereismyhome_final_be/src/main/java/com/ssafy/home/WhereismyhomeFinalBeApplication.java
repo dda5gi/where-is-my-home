@@ -9,5 +9,5 @@ public class WhereismyhomeFinalBeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WhereismyhomeFinalBeApplication.class, args);
 	}
-
+	
 }
