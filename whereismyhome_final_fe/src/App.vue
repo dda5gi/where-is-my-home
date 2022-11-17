@@ -1,8 +1,6 @@
 <template>
-<!-- App.vue -->
-  <v-app id="app">
-  </v-app>
+  <!-- App.vue -->
+  <v-app id="app"> </v-app>
 </template>
 
-<style>
-</style>
+<style></style>
