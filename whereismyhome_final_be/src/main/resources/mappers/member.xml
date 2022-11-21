@@ -6,8 +6,8 @@
 
 
 	<insert id="register" parameterType="memberDto">
-		insert into member (id, name, pwd, joindate)
-		values (#{id}, #{name}, #{pwd}, now())
+		insert into member (id, name, pwd, joindate, type)
+		values (#{id}, #{name}, #{pwd}, now(), "user")
 	</insert>
 	
 	<select id="login" parameterType="memberDto" resultType="memberDto">
@@ -39,5 +39,10 @@
 		set token = #{token, jdbcType=VARCHAR}
 		where id = #{id}
 	</update>
+	
+	<delete id="deleteMember" parameterType="memberDto">
+		delete from member
+		where id = #{id} and pwd = #{pwd}
+	</delete>
 	
 </mapper>
