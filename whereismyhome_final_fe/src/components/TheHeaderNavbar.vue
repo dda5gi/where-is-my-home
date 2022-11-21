@@ -23,8 +23,7 @@
           </v-btn>
         </v-container>
         <v-container v-show="isLogin">
-          <v-btn text @click="logout">
-            <!-- <v-btn text @click="logout"> -->
+          <v-btn text @click.prevent="logout">
             <v-icon left dark>logout</v-icon>
             로그아웃
           </v-btn>
@@ -66,12 +65,27 @@ export default {
   methods: {
     ...mapActions(memberStore, ["memberLogout"]),
 
-    logout() {
+    async logout() {
       //vuex actions에서 memberLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
-      //+ satate에 isLogin, memberInfo 정보 변경)
-      if (this.memberInfo != null) this.memberLogout(this.memberInfo.id);
+      //+ state에 isLogin, memberInfo 정보 변경)
+      // console.log(this.isLogin);
+      this.$store.commit("memberStore/SET_IS_LOGIN", false);
+      // console.log("memberInfo before remove >> ", this.memberInfo);
+      await this.memberLogout();
+      // console.log("memberInfo after remove >> ", this.memberInfo);
+      // console.log(
+      //   "login success token before remove >> ",
+      //   sessionStorage.getItem("access-token"),
+      //   sessionStorage.getItem("refresh-token")
+      // );
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+      // console.log(
+      //   "login success token after remove >> ",
+      //   sessionStorage.getItem("access-token"),
+      //   sessionStorage.getItem("refresh-token")
+      // );
+      console.log("store after logout(isLogin, memberInfo) >> ", this.isLogin, this.memberInfo);
       if (this.$route.path != "/") this.$router.push({ name: "main" });
       else this.$router.go();
     },

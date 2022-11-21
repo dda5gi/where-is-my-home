@@ -24,4 +24,8 @@ async function regist(member, success, fail) {
   await api.post(`/user/register`, member).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, regist };
+async function deleteMember(member, success, fail) {
+  await api.post(`/user/delete`, member).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, regist, deleteMember };

@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, logout, tokenRegeneration, regist } from "@/api/member";
+import { login, findById, logout, tokenRegeneration, regist, deleteMember } from "@/api/member";
 
 const memberStore = {
   namespaced: true,
@@ -14,7 +14,11 @@ const memberStore = {
   getters: {},
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {
+      // console.log("before isLogin : ", state.isLogin);
+      // console.log("change to : ", isLogin);
       state.isLogin = isLogin;
+      // console.log("after isLogin : ", state);
+      // console.log("after isLogin : ", state.isLogin);
     },
     SET_IS_LOGIN_ERROR: (state, isLoginError) => {
       state.isLoginError = isLoginError;
@@ -26,8 +30,8 @@ const memberStore = {
       state.isLogin = true;
       state.memberInfo = memberInfo;
     },
-    CHANGE_MODIFY_MODE: (state) => {
-      state.isModify = !state.isModify;
+    SET_MODIFY_MODE: (state, mode) => {
+      state.isModify = mode;
     },
   },
   actions: {
@@ -70,7 +74,10 @@ const memberStore = {
           }
         },
         async (error) => {
-          console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+          console.log(
+            "getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
+            error.response.status
+          );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }
@@ -119,14 +126,16 @@ const memberStore = {
       );
     },
 
-    async memberLogout({ commit }, memberid) {
+    async memberLogout({ commit, state }) {
+      // console.log("memberLogout memberInfo >> ", state.memberInfo);
       await logout(
-        memberid,
+        state.memberInfo.id,
         ({ data }) => {
           if (data.message === "success") {
             commit("SET_IS_LOGIN", false);
             commit("SET_MEMBER_INFO", null);
             commit("SET_IS_VALID_TOKEN", false);
+            // console.log("isLogin in memberLogout >> ", state.isLogin);
           } else {
             console.log("유저 정보 없음!!!!");
           }
@@ -135,6 +144,7 @@ const memberStore = {
           console.log(error);
         }
       );
+      console.log("isLogin in memberLogout22 >> ", state);
     },
 
     async memberRegist(store, member) {
@@ -156,6 +166,23 @@ const memberStore = {
     },
 
     // async memberModify({ commit }, member) {},
+
+    async deleteMember({ commit }, member) {
+      console.log(commit);
+      await deleteMember(
+        member,
+        ({ data }) => {
+          if (data.message === "success") {
+            this.memberLogout();
+          } else {
+            console.log("탈퇴 실패");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
   modules: {},
 };
