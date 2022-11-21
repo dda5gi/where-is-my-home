@@ -1,6 +1,8 @@
 package com.ssafy.home.member;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,15 +45,17 @@ public class MemberController {
 	@ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(
-			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
+			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto)
+	{
+		logger.info("들어옴 : {}", memberDto);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
 			MemberDto loginUser = memberService.login(memberDto);
 			if (loginUser != null) {
-				String accessToken = jwtService.createAccessToken("userid", loginUser.getUserid());// key, data
-				String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserid());// key, data
-				memberService.saveRefreshToken(memberDto.getUserid(), refreshToken);
+				String accessToken = jwtService.createAccessToken("id", loginUser.getId());// key, data
+				String refreshToken = jwtService.createRefreshToken("id", loginUser.getId());// key, data
+				memberService.saveRefreshToken(memberDto.getId(), refreshToken);
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
@@ -71,18 +75,18 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
-	@GetMapping("/info/{userid}")
+	@GetMapping("/info/{id}")
 	public ResponseEntity<Map<String, Object>> getInfo(
-			@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid,
+			@PathVariable("id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String id,
 			HttpServletRequest request) {
-//		logger.debug("userid : {} ", userid);
+//		logger.debug("id : {} ", id);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				MemberDto memberDto = memberService.userInfo(userid);
+				MemberDto memberDto = memberService.userInfo(id);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -100,12 +104,12 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
-	@GetMapping("/logout/{userid}")
-	public ResponseEntity<?> removeToken(@PathVariable("userid") String userid) {
+	@GetMapping("/logout/{id}")
+	public ResponseEntity<?> removeToken(@PathVariable("id") String id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			memberService.deleRefreshToken(userid);
+			memberService.deleRefreshToken(id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -126,8 +130,8 @@ public class MemberController {
 		String token = request.getHeader("refresh-token");
 		logger.debug("token : {}, memberDto : {}", token, memberDto);
 		if (jwtService.checkToken(token)) {
-			if (token.equals(memberService.getRefreshToken(memberDto.getUserid()))) {
-				String accessToken = jwtService.createAccessToken("userid", memberDto.getUserid());
+			if (token.equals(memberService.getRefreshToken(memberDto.getId()))) {
+				String accessToken = jwtService.createAccessToken("id", memberDto.getId());
 				logger.debug("token : {}", accessToken);
 				logger.debug("정상적으로 액세스토큰 재발급!!!");
 				resultMap.put("access-token", accessToken);
