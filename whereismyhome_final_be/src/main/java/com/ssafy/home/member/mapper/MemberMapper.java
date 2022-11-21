@@ -11,10 +11,10 @@ import com.ssafy.home.member.dto.MemberDto;
 public interface MemberMapper {
 	public int register(MemberDto memberDto) throws SQLException;
 	public MemberDto login(MemberDto memberDto) throws SQLException;
-	public MemberDto userInfo(String userid) throws SQLException;
+	public MemberDto userInfo(String id) throws SQLException;
 	
 	public void saveRefreshToken(Map<String, String> map) throws SQLException;
-	public Object getRefreshToken(String userid) throws SQLException;
+	public Object getRefreshToken(String id) throws SQLException;
 	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
 	
 }

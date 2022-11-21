@@ -1,45 +1,47 @@
 package com.ssafy.home.member.dto;
 
 public class MemberDto {
-	String userid;
-	String username;
-	String userpwd;
+	String id;
+	String name;
+	String pwd;
 	String token;
+	String type;
 
 	public MemberDto() {
 		super();
 	}
 
-	public MemberDto(String userid, String username, String userpwd, String token) {
+	public MemberDto(String id, String name, String pwd, String token, String type) {
 		super();
-		this.userid = userid;
-		this.username = username;
-		this.userpwd = userpwd;
+		this.id = id;
+		this.name = name;
+		this.pwd = pwd;
 		this.token = token;
+		this.type = type;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getUserpwd() {
-		return userpwd;
+	public String getPwd() {
+		return pwd;
 	}
 
-	public void setUserpwd(String userpwd) {
-		this.userpwd = userpwd;
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
 
 	public String getToken() {
@@ -50,10 +52,18 @@ public class MemberDto {
 		this.token = token;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
-		return "MemberDto [userid=" + userid + ", username=" + username + ", userpwd=" + userpwd + ", token=" + token
-				+ "]";
+		return "MemberDto [id=" + id + ", name=" + name + ", pwd=" + pwd + ", token=" + token + ", type=" + type + "]";
 	}
+
 
 }
