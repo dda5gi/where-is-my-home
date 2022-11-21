@@ -145,4 +145,19 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody MemberDto memberDto) throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		logger.debug("회원가입 요청 : {}", memberDto);
+		int result = memberService.register(memberDto);
+		if(result != 0) {
+			logger.debug("회원가입 성공");
+			resultMap.put("message", SUCCESS);
+		} else {
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }

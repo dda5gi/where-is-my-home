@@ -16,7 +16,7 @@
 		where id = #{id} and pwd = #{pwd}
 	</select>
 	
-	<select id="Info" parameterType="string" resultType="memberDto">
+	<select id="userInfo" parameterType="string" resultType="memberDto">
 		select name, id, joindate
 		from member
 		where id = #{id}

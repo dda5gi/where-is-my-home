@@ -15,6 +15,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Override
+	public int register(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).register(memberDto);
+	}
 
 	@Override
 	public MemberDto login(MemberDto memberDto) throws Exception {
@@ -48,5 +53,6 @@ public class MemberServiceImpl implements MemberService {
 		map.put("token", null);
 		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
+
 
 }
