@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.qna.mapper.QnaMapper">
+
+	<resultMap type="questionDto" id="question">
+		<result column="article_no" property="articleNo"></result>
+		<result column="title" property="title"></result>
+		<result column="content" property="content"></result>
+		<result column="register_time" property="registerTime"></result>
+		<result column="hit" property="hit"></result>
+		<result column="member_id" property="memberId"></result>
+	</resultMap>
+
+	<resultMap type="answerDto" id="answer">
+		<result column="article_no" property="articleNo"></result>
+		<result column="title" property="title"></result>
+		<result column="content" property="content"></result>
+		<result column="register_time" property="registerTime"></result>
+		<result column="hit" property="hit"></result>
+		<result column="member_id" property="memberId"></result>
+		<result column="question_article_no" property="questionArticleNo"></result>
+	</resultMap>
+
+	<insert id="writeQuestion" parameterType="questionDto">
+		insert into question(title, content, register_time, hit, member_id)
+		values (#{title}, #{content}, now(), 0, #{memberId})
+	</insert>
+	
+	<insert id="writeAnswer" parameterType="answerDto">
+		insert into answer(title, content, register_time, hit, member_id, question_article_no)
+		values (#{title}, #{content}, now(), 0, #{memberId}, #{questionArticleNo})
+	</insert>
+
+	<select id="listQuestion" resultMap="question">
+		select article_no, title, content, register_time, hit, member_id
+		from question;
+	</select>
+	
+	<select id="listAnswer" resultMap="answer" parameterType="int">
+		select article_no, title, content, register_time, hit, member_id, question_artilce_no
+		from question
+		where question_artilce_no = #{questionArticleNo};
+	</select>
+	
+	<select id="getQuestion" parameterType="int" resultMap="question">
+		select *
+		from question
+		where article_no = #{articleNo}
+	</select>
+	
+	<select id="getAnswer" parameterType="int" resultMap="answer">
+		select *
+		from answer
+		where article_no = #{articleNo}
+	</select>
+	
+	<update id="modifyQuestion" parameterType="questionDto">
+		update question
+		set title = #{title}, content = #{content}
+		where article_no = #{articleNo}
+	</update>
+
+	<update id="modifyAnswer" parameterType="answerDto">
+		update answer
+		set title = #{title}, content = #{content}
+		where article_no = #{articleNo}
+	</update>
+
+	<delete id="deleteQuestion" parameterType="int">
+		delete from question
+		where article_no = #{articleNo}
+	</delete>
+	
+	<delete id="deleteAnswer" parameterType="int">
+		delete from answer 
+		where article_no = #{articleNo}
+	</delete>
+
+	<update id="updateHitQuestion" parameterType="int">
+		update question
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+
+	<update id="updateHitAnswer" parameterType="int">
+		update answer 
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+</mapper>
