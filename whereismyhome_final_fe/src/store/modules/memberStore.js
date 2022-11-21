@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, logout, tokenRegeneration } from "@/api/member";
+import { login, findById, logout, tokenRegeneration, regist } from "@/api/member";
 
 const memberStore = {
   namespaced: true,
@@ -9,6 +9,7 @@ const memberStore = {
     isLoginError: false,
     memberInfo: null,
     isValidToken: false,
+    isModify: false,
   },
   getters: {},
   mutations: {
@@ -24,6 +25,9 @@ const memberStore = {
     SET_MEMBER_INFO: (state, memberInfo) => {
       state.isLogin = true;
       state.memberInfo = memberInfo;
+    },
+    CHANGE_MODIFY_MODE: (state) => {
+      state.isModify = !state.isModify;
     },
   },
   actions: {
@@ -60,7 +64,7 @@ const memberStore = {
         ({ data }) => {
           if (data.message === "success") {
             commit("SET_MEMBER_INFO", data.userInfo);
-            // console.log("3. getMemberInfo data >> ", data);
+            // console.log("3. getMemberInfo data >> ", data.userInfo);
           } else {
             console.log("유저 정보 없음!!!!");
           }
@@ -74,13 +78,13 @@ const memberStore = {
     },
 
     async tokenRegeneration({ commit, state }) {
-      console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
+      // console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
       await tokenRegeneration(
         JSON.stringify(state.memberInfo),
         ({ data }) => {
           if (data.message === "success") {
             let accessToken = data["access-token"];
-            console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
+            // console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
             sessionStorage.setItem("access-token", accessToken);
             commit("SET_IS_VALID_TOKEN", true);
           }
@@ -88,7 +92,7 @@ const memberStore = {
         async (error) => {
           // HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
           if (error.response.status === 401) {
-            console.log("갱신 실패");
+            // console.log("갱신 실패");
             // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
             await logout(
               state.memberInfo.id,
@@ -132,6 +136,26 @@ const memberStore = {
         }
       );
     },
+
+    async memberRegist(store, member) {
+      console.log(store);
+      console.log(member);
+      await regist(
+        member,
+        ({ data }) => {
+          if (data.message === "success") {
+            console.log("회원 가입 성공!!!");
+          } else {
+            console.log("회원 가입 실패!!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    // async memberModify({ commit }, member) {},
   },
   modules: {},
 };

@@ -12,19 +12,27 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn text to="/member/login" v-show="!isLogin">
-          <v-icon left dark>login</v-icon>
-          로그인
-        </v-btn>
-        <v-btn text @click="logout" v-show="isLogin">
-          <!-- <v-btn text @click="logout"> -->
-          <v-icon left dark>logout</v-icon>
-          로그아웃
-        </v-btn>
-        <v-btn text to="/member/info" v-show="isLogin">
-          <v-icon left dark>account_circle</v-icon>
-          회원정보
-        </v-btn>
+        <v-container v-show="!isLogin">
+          <v-btn text to="/member/login">
+            <v-icon left dark>login</v-icon>
+            로그인
+          </v-btn>
+          <v-btn text to="/member/register">
+            <v-icon left dark>person_add_alt</v-icon>
+            회원가입
+          </v-btn>
+        </v-container>
+        <v-container v-show="isLogin">
+          <v-btn text @click="logout">
+            <!-- <v-btn text @click="logout"> -->
+            <v-icon left dark>logout</v-icon>
+            로그아웃
+          </v-btn>
+          <v-btn text to="/member/info">
+            <v-icon left dark>account_circle</v-icon>
+            회원정보
+          </v-btn>
+        </v-container>
       </v-toolbar-items>
     </v-app-bar>
     <v-main> </v-main>

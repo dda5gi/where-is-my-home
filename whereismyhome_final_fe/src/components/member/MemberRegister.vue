@@ -9,35 +9,21 @@
           <v-layout column>
             <v-flex>
               <!-- required 적용 안 됨. -->
-              <v-text-field
-                v-model="member.name"
-                label="이름"
-                id="memberName"
-                type="text"
-                required
-              ></v-text-field>
+              <v-text-field v-model="member.name" label="이름" id="memberName" type="text" required></v-text-field>
+            </v-flex>
+            <v-flex>
+              <!-- required 적용 안 됨. -->
+              <v-text-field v-model="member.id" label="아이디" id="memberId" required></v-text-field>
             </v-flex>
             <v-flex>
               <!-- required 적용 안 됨. -->
               <v-text-field
-                v-model="member.id"
-                label="아이디"
-                id="memberId"
-                required
-              ></v-text-field>
-            </v-flex>
-            <v-flex>
-              <!-- required 적용 안 됨. -->
-              <v-text-field
-                v-model="member.password"
+                v-model="member.pwd"
                 label="비밀번호"
                 id="memberPassword"
                 type="password"
                 required
               ></v-text-field>
-            </v-flex>
-            <v-flex>
-              <v-checkbox v-model="member.admin" label="관리자 등록"></v-checkbox>
             </v-flex>
             <v-flex class="text-xs-center" mt-5>
               <v-btn color="primary" type="submit" class="mx-2"> 가입하기 </v-btn>
@@ -51,20 +37,27 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "MemberRegister",
 
   data() {
     return {
-      member: { name: "", id: "", password: "", admin: false },
+      member: { name: "", id: "", pwd: "" },
     };
   },
 
   methods: {
-    onSubmit(event) {
+    ...mapActions(memberStore, ["memberRegist"]),
+
+    async onSubmit(event) {
       event.preventDefault();
       console.log("회원가입");
-      console.log(this.member);
+      await this.memberRegist(this.member);
+      this.$router.push({ name: "main" });
     },
 
     mvLogIn() {
