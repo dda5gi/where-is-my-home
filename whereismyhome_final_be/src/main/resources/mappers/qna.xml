@@ -3,53 +3,89 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.qna.mapper.QnaMapper">
 
-	<resultMap type="qnaDto" id="qna">
+	<resultMap type="questionDto" id="question">
 		<result column="article_no" property="articleNo"></result>
 		<result column="title" property="title"></result>
 		<result column="content" property="content"></result>
 		<result column="register_time" property="registerTime"></result>
 		<result column="hit" property="hit"></result>
-		<result column="category" property="category"></result>
-		<result column="qna_article_no" property="qnaArticleNo"></result>
 		<result column="member_id" property="memberId"></result>
 	</resultMap>
 
-	<insert id="writeQuestion" parameterType="qnaDto">
-		insert into qna(title, content, register_time, hit, category, member_id)
-		values (#{title}, #{content}, now(), 0, #{category}, #{memberId})
+	<resultMap type="answerDto" id="answer">
+		<result column="article_no" property="articleNo"></result>
+		<result column="title" property="title"></result>
+		<result column="content" property="content"></result>
+		<result column="register_time" property="registerTime"></result>
+		<result column="hit" property="hit"></result>
+		<result column="member_id" property="memberId"></result>
+		<result column="question_article_no" property="questionArticleNo"></result>
+	</resultMap>
+
+	<insert id="writeQuestion" parameterType="questionDto">
+		insert into question(title, content, register_time, hit, member_id)
+		values (#{title}, #{content}, now(), 0, #{memberId})
 	</insert>
 	
-	<insert id="writeAnswer" parameterType="qnaDto">
-		insert into qna(title, content, register_time, hit, category, qna_article_no, member_id)
-		values (#{title}, #{content}, now(), 0, #{category}, #{qnaArticleNo}, #{memberId})
+	<insert id="writeAnswer" parameterType="answerDto">
+		insert into answer(title, content, register_time, hit, member_id, question_article_no)
+		values (#{title}, #{content}, now(), 0, #{memberId}, #{questionArticleNo})
 	</insert>
-	
-	<select id="listQna" resultMap="qna">
-		select article_no, title, content, register_time, hit
-		from qna;
+
+	<select id="listQuestion" resultMap="question">
+		select article_no, title, content, register_time, hit, member_id
+		from question;
 	</select>
 	
-	<select id="getQna" parameterType="int" resultMap="qna">
+	<select id="listAnswer" resultMap="answer" parameterType="int">
+		select article_no, title, content, register_time, hit, member_id, question_artilce_no
+		from question
+		where question_artilce_no = #{questionArticleNo};
+	</select>
+	
+	<select id="getQuestion" parameterType="int" resultMap="question">
 		select *
-		from qna
+		from question
 		where article_no = #{articleNo}
 	</select>
 	
-	<update id="modifyQna" parameterType="qnaDto">
-		update qna
+	<select id="getAnswer" parameterType="int" resultMap="answer">
+		select *
+		from answer
+		where article_no = #{articleNo}
+	</select>
+	
+	<update id="modifyQuestion" parameterType="questionDto">
+		update question
 		set title = #{title}, content = #{content}
 		where article_no = #{articleNo}
 	</update>
 
-	<update id="updateHit" parameterType="int">
-		update qna
-		set hit = hit + 1
+	<update id="modifyAnswer" parameterType="answerDto">
+		update answer
+		set title = #{title}, content = #{content}
 		where article_no = #{articleNo}
 	</update>
-	
-	<delete id="deleteQna" parameterType="int">
-		delete from qna
+
+	<delete id="deleteQuestion" parameterType="int">
+		delete from question
 		where article_no = #{articleNo}
 	</delete>
 	
+	<delete id="deleteAnswer" parameterType="int">
+		delete from answer 
+		where article_no = #{articleNo}
+	</delete>
+
+	<update id="updateHitQuestion" parameterType="int">
+		update question
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+
+	<update id="updateHitAnswer" parameterType="int">
+		update answer 
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
 </mapper>

@@ -3,7 +3,8 @@ package com.ssafy.home.qna.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.home.qna.dto.QnaDto;
+import com.ssafy.home.qna.dto.AnswerDto;
+import com.ssafy.home.qna.dto.QuestionDto;
 import com.ssafy.home.qna.mapper.QnaMapper;
 
 @Service
@@ -17,12 +18,12 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public int writeQuestion(QnaDto qnaDto) throws Exception {
-		return qnaMapper.writeQuestion(qnaDto);
+	public int writeQuestion(QuestionDto questionDto) throws Exception {
+		return qnaMapper.writeQuestion(questionDto);
 	}
 
 	@Override
-	public int writeAnswer(QnaDto qnaDto) throws Exception {
-		return qnaMapper.writeAnswer(qnaDto);
+	public int writeAnswer(AnswerDto answerDto) throws Exception {
+		return qnaMapper.writeAnswer(answerDto);
 	}
 }

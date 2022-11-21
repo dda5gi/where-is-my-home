@@ -1,8 +1,9 @@
 package com.ssafy.home.qna.service;
 
-import com.ssafy.home.qna.dto.QnaDto;
+import com.ssafy.home.qna.dto.AnswerDto;
+import com.ssafy.home.qna.dto.QuestionDto;
 
 public interface QnaService {
-	public int writeQuestion(QnaDto qnaDto) throws Exception;
-	public int writeAnswer(QnaDto qnaDto) throws Exception;
+	public int writeQuestion(QuestionDto questionDto) throws Exception;
+	public int writeAnswer(AnswerDto answerDto) throws Exception;
 }

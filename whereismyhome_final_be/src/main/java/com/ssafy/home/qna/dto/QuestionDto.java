@@ -1,29 +1,24 @@
 package com.ssafy.home.qna.dto;
 
-public class QnaDto {
+public class QuestionDto {
 	int articleNo;
 	String title;
 	String content;
 	String registerTime;
 	int hit;
-	String category;
-	int qnaArticleNo;
 	String memberId;
 
-	public QnaDto() {
+	public QuestionDto() {
 		super();
 	}
 
-	public QnaDto(int articleNo, String title, String content, String registerTime, int hit, String category,
-			int qnaArticleNo, String memberId) {
+	public QuestionDto(int articleNo, String title, String content, String registerTime, int hit, String memberId) {
 		super();
 		this.articleNo = articleNo;
 		this.title = title;
 		this.content = content;
 		this.registerTime = registerTime;
 		this.hit = hit;
-		this.category = category;
-		this.qnaArticleNo = qnaArticleNo;
 		this.memberId = memberId;
 	}
 
@@ -67,22 +62,6 @@ public class QnaDto {
 		this.hit = hit;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public int getQnaArticleNo() {
-		return qnaArticleNo;
-	}
-
-	public void setQnaArticleNo(int qnaArticleNo) {
-		this.qnaArticleNo = qnaArticleNo;
-	}
-
 	public String getMemberId() {
 		return memberId;
 	}
@@ -93,9 +72,8 @@ public class QnaDto {
 
 	@Override
 	public String toString() {
-		return "QnaDto [articleNo=" + articleNo + ", title=" + title + ", content=" + content + ", registerTime="
-				+ registerTime + ", hit=" + hit + ", category=" + category + ", qnaArticleNo=" + qnaArticleNo
-				+ ", memberId=" + memberId + "]";
+		return "QuestionDto [articleNo=" + articleNo + ", title=" + title + ", content=" + content + ", registerTime="
+				+ registerTime + ", hit=" + hit + ", memberId=" + memberId + "]";
 	}
 
 }

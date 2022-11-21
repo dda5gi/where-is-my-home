@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.home.qna.dto.QnaDto;
+import com.ssafy.home.qna.dto.AnswerDto;
+import com.ssafy.home.qna.dto.QuestionDto;
 import com.ssafy.home.qna.service.QnaService;
 import com.ssafy.home.response.ResponseDto;
 
@@ -24,15 +25,23 @@ public class QnaController {
 	@Autowired
 	private QnaService qnaService;
 	
-	@PostMapping
-	public ResponseEntity<ResponseDto> writeQuestion(@RequestBody QnaDto qnaDto) throws Exception {
+	@PostMapping("/question")
+	public ResponseEntity<ResponseDto> writeQuestion(@RequestBody QuestionDto questionDto) throws Exception {
 		ResponseDto responseDto = new ResponseDto();
-		int result = -1;
-		if(qnaDto.getCategory().equals("q")) {
-			result = qnaService.writeQuestion(qnaDto);
+		int result = qnaService.writeQuestion(questionDto);
+		if(result != 0) { 
+			responseDto.setMsg(SUCCESS);
+			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 		} else {
-			result = qnaService.writeAnswer(qnaDto);
+			responseDto.setMsg(FAIL);
+			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@PostMapping("/answer")
+	public ResponseEntity<ResponseDto> writeAnswer(@RequestBody AnswerDto answerDto) throws Exception {
+		ResponseDto responseDto = new ResponseDto();
+		int result = qnaService.writeAnswer(answerDto);
 		if(result != 0) { 
 			responseDto.setMsg(SUCCESS);
 			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
