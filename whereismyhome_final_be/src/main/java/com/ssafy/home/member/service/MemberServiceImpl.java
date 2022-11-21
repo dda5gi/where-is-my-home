@@ -17,6 +17,11 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSession sqlSession;
 
 	@Override
+	public int register(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).register(memberDto);
+	}
+
+	@Override
 	public MemberDto login(MemberDto memberDto) throws Exception {
 		if (memberDto.getId() == null || memberDto.getPwd() == null)
 			return null;
@@ -47,6 +52,11 @@ public class MemberServiceImpl implements MemberService {
 		map.put("id", id);
 		map.put("token", null);
 		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
+	}
+
+	@Override
+	public int deleteMember(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).deleteMember(memberDto);
 	}
 
 }

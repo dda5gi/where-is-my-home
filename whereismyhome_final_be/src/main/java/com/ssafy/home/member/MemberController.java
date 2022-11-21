@@ -1,8 +1,6 @@
 package com.ssafy.home.member;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -145,4 +143,35 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody MemberDto memberDto) throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		logger.debug("회원가입 요청 : {}", memberDto);
+		int result = memberService.register(memberDto);
+		if(result != 0) {
+			logger.debug("회원가입 성공");
+			resultMap.put("message", SUCCESS);
+		} else {
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<?> goodBye(@RequestBody MemberDto memberDto) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		logger.debug("회원탈퇴 요청 : {}", memberDto);
+		int result = memberService.deleteMember(memberDto);
+		if(result != 0) {
+			logger.info("회원탈퇴 성공");
+			resultMap.put("message", SUCCESS);
+		} else {
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }
