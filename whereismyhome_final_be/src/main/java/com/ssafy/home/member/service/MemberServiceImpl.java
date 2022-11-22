@@ -58,5 +58,8 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMember(MemberDto memberDto) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).deleteMember(memberDto);
 	}
-
+	@Override
+	public int modifyMember(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).modifyMember(memberDto);
+	}
 }

@@ -21,11 +21,11 @@
 		where id = #{id}
 	</select>
 	
-	<select id="modifyMember" parameterType="memberDto">
+	<update id="modifyMember" parameterType="memberDto">
 		update member
 		set pwd = #{pwd}, name = #{name}
 		where id = #{id}
-	</select>
+	</update>
 		
 	<delete id="deleteMember" parameterType="memberDto">
 		delete from member
