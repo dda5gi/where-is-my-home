@@ -29,28 +29,27 @@ public class JwtServiceImpl implements JwtService {
 	private static final int REFRESH_TOKEN_EXPIRE_MINUTES = 2; // 주단위
 
 	@Override
-	public <T> String createAccessToken(String key, T data) {
-		return create(key, data, "access-token", 1000 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES);
+	public <T> String createAccessToken(Map<String, Object> map) {
+		return create(map, "access-token", 1000 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES);
 //		return create(key, data, "access-token", 1000 * 10 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 
 //	AccessToken에 비해 유효기간을 길게...
 	@Override
-	public <T> String createRefreshToken(String key, T data) {
-		return create(key, data, "refresh-token", 1000 * 60 * 60 * 24 * 7 * REFRESH_TOKEN_EXPIRE_MINUTES);
+	public <T> String createRefreshToken(Map<String, Object> map) {
+		return create(map, "refresh-token", 1000 * 60 * 60 * 24 * 7 * REFRESH_TOKEN_EXPIRE_MINUTES);
 //		return create(key, data, "refresh-token", 1000 * 30 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 
 	//Token 발급
 	/**
-	 * key : Claim에 셋팅될 key 값
-	 * data : Claim에 셋팅 될 data 값
+	 * map : Claim에 셋팅될 key, data 쌍
 	 * subject : payload에 sub의 value로 들어갈 subject값
 	 * expire : 토큰 유효기간 설정을 위한 값
 	 * jwt 토큰의 구성 : header+payload+signature
 	 */
 	@Override
-	public <T> String create(String key, T data, String subject, long expire) {
+	public <T> String create(Map<String, Object> map, String subject, long expire) {
 		String jwt = Jwts.builder()
 				// Header 설정 : 토큰의 타입, 해쉬 알고리즘 정보 세팅.
 				.setHeaderParam("typ", "JWT")
@@ -58,7 +57,8 @@ public class JwtServiceImpl implements JwtService {
 				// Payload 설정 : 유효기간(Expiration), 토큰 제목 (Subject), 데이터 (Claim) 등 정보 세팅.
 				.setExpiration(new Date(System.currentTimeMillis() + expire)) // 토큰 유효기간
 				.setSubject(subject) // 토큰 제목 설정 ex) access-token, refresh-token
-				.claim(key, data) // 저장할 데이터
+//				.claim(key, data) // 저장할 데이터
+				.addClaims(map)
 				// Signature 설정 : secret key를 활용한 암호화.
 				.signWith(SignatureAlgorithm.HS256, this.generateKey())
 				.compact(); // 직렬화 처리.
@@ -91,7 +91,7 @@ public class JwtServiceImpl implements JwtService {
 //			parseClaimsJws : 파싱하여 원본 jws 만들기
 			Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
 //			Claims 는 Map의 구현체 형태
-			logger.debug("claims: {}", claims);
+			logger.info("claims: {}", claims);
 			return true;
 		} catch (Exception e) {
 //			if (logger.isInfoEnabled()) {
@@ -132,7 +132,7 @@ public class JwtServiceImpl implements JwtService {
 
 	@Override
 	public String getUserId() {
-		return (String) this.get("user").get("userid");
+		return (String) this.get("user").get("id");
 	}
 
 }

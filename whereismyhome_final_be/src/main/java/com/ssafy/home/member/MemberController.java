@@ -51,8 +51,11 @@ public class MemberController {
 		try {
 			MemberDto loginUser = memberService.login(memberDto);
 			if (loginUser != null) {
-				String accessToken = jwtService.createAccessToken("id", loginUser.getId());// key, data
-				String refreshToken = jwtService.createRefreshToken("id", loginUser.getId());// key, data
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", loginUser.getId());
+				map.put("type", loginUser.getType());
+				String accessToken = jwtService.createAccessToken(map);// key, data
+				String refreshToken = jwtService.createRefreshToken(map);// key, data
 				memberService.saveRefreshToken(memberDto.getId(), refreshToken);
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
@@ -129,7 +132,11 @@ public class MemberController {
 		logger.debug("token : {}, memberDto : {}", token, memberDto);
 		if (jwtService.checkToken(token)) {
 			if (token.equals(memberService.getRefreshToken(memberDto.getId()))) {
-				String accessToken = jwtService.createAccessToken("id", memberDto.getId());
+				MemberDto loginUser = memberService.userInfo(memberDto.getId());
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", loginUser.getId());
+				map.put("type", loginUser.getType());
+				String accessToken = jwtService.createAccessToken(map);// key, data
 				logger.debug("token : {}", accessToken);
 				logger.debug("정상적으로 액세스토큰 재발급!!!");
 				resultMap.put("access-token", accessToken);
