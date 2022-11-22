@@ -1,6 +1,6 @@
 package com.ssafy.home.region.dto;
 
-public class Region {
+public class RegionDto {
 	String name;
 	String code;
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.home.region.dto.Region;
+import com.ssafy.home.region.dto.RegionDto;
 
 @Mapper
 public interface RegionMapper {
-	public List<Region> getSido();
-	public List<Region> getGugun(Region region);
-	public List<Region> getDong(Region region);
+	public List<RegionDto> getSido();
+	public List<RegionDto> getGugun(RegionDto region);
+	public List<RegionDto> getDong(RegionDto region);
 }

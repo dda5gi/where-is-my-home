@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.home.region.dto.Region;
+import com.ssafy.home.region.dto.RegionDto;
 import com.ssafy.home.region.mapper.RegionMapper;
-import com.ssafy.home.region.mapper.regionMapper;
 
 @Service
 public class RegionServiceImpl implements RegionService {
@@ -19,17 +18,17 @@ public class RegionServiceImpl implements RegionService {
 	}
 			
 	@Override
-	public List<Region> getSido() {
+	public List<RegionDto> getSido() {
 		return regionMapper.getSido();
 	}
 
 	@Override
-	public List<Region> getGugun(Region region) {
+	public List<RegionDto> getGugun(RegionDto region) {
 		return regionMapper.getGugun(region);
 	}
 
 	@Override
-	public List<Region> getDong(Region region) {
+	public List<RegionDto> getDong(RegionDto region) {
 		return regionMapper.getDong(region);
 	}
 

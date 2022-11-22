@@ -2,10 +2,10 @@ package com.ssafy.home.region.service;
 
 import java.util.List;
 
-import com.ssafy.home.region.dto.Region;
+import com.ssafy.home.region.dto.RegionDto;
 
 public interface RegionService {
-	List<Region> getSido();
-	List<Region> getGugun(Region region);
-	List<Region> getDong(Region region);
+	List<RegionDto> getSido();
+	List<RegionDto> getGugun(RegionDto region);
+	List<RegionDto> getDong(RegionDto region);
 }
