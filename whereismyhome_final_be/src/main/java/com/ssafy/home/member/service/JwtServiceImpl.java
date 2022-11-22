@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
 
 	@Override
 	public <T> String createAccessToken(Map<String, Object> map) {
-		return create(map, "access-token", 1000 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES);
+		return create(map, "access-token", 1000 * 60 * 30 * ACCESS_TOKEN_EXPIRE_MINUTES);
 //		return create(key, data, "access-token", 1000 * 10 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 

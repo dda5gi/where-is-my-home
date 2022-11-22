@@ -12,14 +12,19 @@ import com.ssafy.home.qna.dto.QuestionDto;
 public interface QnaMapper{
 	public int writeQuestion(QuestionDto questionDto) throws SQLException;
 	public int writeAnswer(AnswerDto answerDto) throws SQLException;
-	public List<QuestionDto> listQuestion(QuestionDto questionDto) throws SQLException;
-	public List<AnswerDto> listAnswerDto(AnswerDto answerDto) throws SQLException;
+
+	public List<QuestionDto> listQuestion() throws SQLException;
+	public List<AnswerDto> listAnswer(int articleNo) throws SQLException;
+
 	public QuestionDto getQuestion(int articleNo) throws SQLException;
 	public AnswerDto getAnswer(int articleNo) throws SQLException;
-	public QuestionDto modifyQuestion(QuestionDto questionDto) throws SQLException;
-	public AnswerDto modifyAnswer(AnswerDto answerDto) throws SQLException;
+
+	public int modifyQuestion(QuestionDto questionDto) throws SQLException;
+	public int modifyAnswer(AnswerDto answerDto) throws SQLException;
+
 	public int deleteQuestion(int articleNo) throws SQLException;
 	public int deleteAnswer(int articleNo) throws SQLException;
+
 	public int updateHitQuestion(int articleNo) throws SQLException;
 	public int updateHitAnswer(int articleNo) throws SQLException;
 }

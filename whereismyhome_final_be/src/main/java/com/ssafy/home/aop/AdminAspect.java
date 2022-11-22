@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.ssafy.home.exception.UnAuthorizedException;
 import com.ssafy.home.member.service.JwtService;
 import com.ssafy.home.member.service.MemberService;
 
@@ -29,12 +30,13 @@ public class AdminAspect {
 	public void isAdmin(JoinPoint jp) throws Exception { // 어드민만 공지사항 작성,수정,삭제할 수 있게 한다.
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request =requestAttributes.getRequest();
+        HttpServletRequest request = requestAttributes.getRequest();
         if(!jwtService.checkToken(request.getHeader("access-token"))) {
         	String type = (String) jwtService.get("user").get("type");
         	if(!type.equals("admin")) {
-        		throw new Exception();
+        		throw new UnAuthorizedException();
         	}
         }
 	}
+
 }
