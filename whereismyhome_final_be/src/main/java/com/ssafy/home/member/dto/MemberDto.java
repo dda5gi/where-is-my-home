@@ -1,11 +1,11 @@
 package com.ssafy.home.member.dto;
 
 public class MemberDto {
-	String id;
-	String name;
-	String pwd;
-	String token;
-	String type;
+	private String id;
+	private String name;
+	private String pwd;
+	private String token;
+	private String type;
 
 	public MemberDto() {
 		super();

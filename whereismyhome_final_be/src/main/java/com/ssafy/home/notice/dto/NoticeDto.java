@@ -1,11 +1,11 @@
 package com.ssafy.home.notice.dto;
 
 public class NoticeDto {
-	int articleNo;
-	String title;
-	String content;
-	String registerTime;
-	int hit;
+	private int articleNo;
+	private String title;
+	private String content;
+	private String registerTime;
+	private int hit;
 
 	public NoticeDto() {
 		super();

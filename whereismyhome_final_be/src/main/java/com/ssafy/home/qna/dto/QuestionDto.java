@@ -1,12 +1,12 @@
 package com.ssafy.home.qna.dto;
 
 public class QuestionDto {
-	int articleNo;
-	String title;
-	String content;
-	String registerTime;
-	int hit;
-	String memberId;
+	private int articleNo;
+	private String title;
+	private String content;
+	private String registerTime;
+	private int hit;
+	private String memberId;
 
 	public QuestionDto() {
 		super();
