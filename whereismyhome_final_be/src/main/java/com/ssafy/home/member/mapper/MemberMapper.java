@@ -13,6 +13,7 @@ public interface MemberMapper {
 	public MemberDto login(MemberDto memberDto) throws SQLException;
 	public MemberDto userInfo(String id) throws SQLException;
 	public int deleteMember(MemberDto memberDto) throws SQLException;
+	public int modifyMember(MemberDto memberDto) throws SQLException;
 	
 	public void saveRefreshToken(Map<String, String> map) throws SQLException;
 	public Object getRefreshToken(String id) throws SQLException;

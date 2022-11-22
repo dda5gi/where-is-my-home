@@ -18,7 +18,7 @@
 	
 	<select id="listNotice" resultMap="notice">
 		select article_no, title, content, register_time, hit
-		from notice;
+		from notice order by article_no desc;
 	</select>
 	
 	<select id="getNotice" parameterType="int" resultMap="notice">

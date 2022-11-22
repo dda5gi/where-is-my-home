@@ -40,50 +40,39 @@ public class NoticeController {
 
 	@GetMapping("/{articleNo}")
 	public ResponseEntity<ResponseDto> getNotice(@PathVariable("articleNo") int articleNo) throws Exception {
+		logger.info("공지사항 글 보기 : {}", articleNo);
 		ResponseDto responseDto = new ResponseDto();
+		noticeService.updateHit(articleNo);
 		responseDto.addPayload("article", noticeService.getNotice(articleNo));
 		responseDto.setMsg(SUCCESS);
-		noticeService.updateHit(articleNo);
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping
 	public ResponseEntity<ResponseDto> writeNotice(@RequestBody NoticeDto noticeDto) throws Exception {
+		logger.info("공지사항 글 쓰기 {}", noticeDto);
 		ResponseDto responseDto = new ResponseDto();
 		int result = noticeService.writeNotice(noticeDto);
-		if(result != 0) { 
-			responseDto.setMsg(SUCCESS);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
-		} else {
-			responseDto.setMsg(FAIL);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		responseDto.setMsg(SUCCESS);
+		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping
 	public ResponseEntity<ResponseDto> modifyNotice(@RequestBody NoticeDto noticeDto) throws Exception {
+		logger.info("공지사항 글  수정 {}", noticeDto);
 		ResponseDto responseDto = new ResponseDto();
 		int result = noticeService.modifyNotice(noticeDto);
-		if(result != 0) { 
-			responseDto.setMsg(SUCCESS);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
-		} else {
-			responseDto.setMsg(FAIL);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		responseDto.setMsg(SUCCESS);
+		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/{articleNo}")
 	public ResponseEntity<ResponseDto> deleteNotice(@PathVariable("articleNo") int articleNo) throws Exception {
+		logger.info("공지사항 글  삭제: {}", articleNo);
 		ResponseDto responseDto = new ResponseDto();
 		int result = noticeService.deleteNotice(articleNo);
-		if(result != 0) { 
-			responseDto.setMsg(SUCCESS);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
-		} else {
-			responseDto.setMsg(FAIL);
-			return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		responseDto.setMsg(SUCCESS);
+		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
 }

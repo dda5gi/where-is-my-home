@@ -38,9 +38,9 @@
 	</select>
 	
 	<select id="listAnswer" resultMap="answer" parameterType="int">
-		select article_no, title, content, register_time, hit, member_id, question_artilce_no
-		from question
-		where question_artilce_no = #{questionArticleNo};
+		select article_no, title, content, register_time, hit, member_id, question_article_no
+		from answer
+		where question_article_no = #{articleNo};
 	</select>
 	
 	<select id="getQuestion" parameterType="int" resultMap="question">
