@@ -22,6 +22,12 @@
               <v-text-field class="pe-6" label="아이디" v-model="member.id"></v-text-field>
               <v-text-field class="pe-6" label="현재 비밀번호" type="password" v-model="member.pwd"></v-text-field>
               <v-text-field class="pe-6" label="새로운 비밀번호" type="password" v-model="new_pwd"></v-text-field>
+              <v-text-field
+                class="pe-6"
+                label="새로운 비밀번호 확인"
+                type="password"
+                v-model="new_pwd_check"
+              ></v-text-field>
             </v-card-text>
           </v-container>
           <v-container v-show="isDelete === true">
@@ -65,6 +71,7 @@ export default {
     return {
       member: {},
       new_pwd: "",
+      new_pwd_check: "",
       isDelete: false,
     };
   },

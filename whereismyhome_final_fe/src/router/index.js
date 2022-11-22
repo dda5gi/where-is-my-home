@@ -50,6 +50,11 @@ const routes = [
         name: "noticeview",
         component: () => import("@/components/notice/NoticeView"),
       },
+      {
+        path: "write",
+        name: "noticewrite",
+        component: () => import("@/components/notice/NoticeWrite"),
+      },
     ],
   },
 ];

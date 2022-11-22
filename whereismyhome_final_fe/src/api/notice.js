@@ -6,8 +6,9 @@ function listNotice(success, fail) {
   api.get(`/notice/list`).then(success).catch(fail);
 }
 
-function writeNotice(article, success, fail) {
-  api.post(`/notice`, JSON.stringify(article)).then(success).catch(fail);
+function writeNotice(notice, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  api.post(`/notice`, JSON.stringify(notice)).then(success).catch(fail);
 }
 
 function getNotice(articleno, success, fail) {
