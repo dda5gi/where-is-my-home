@@ -7,35 +7,44 @@
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <v-card class="mx-auto">
-          <v-img
-            class="white--text align-end"
-            height="250px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-          >
+          <v-img class="white--text align-end" height="250px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
             <v-card-title class="mx-4">사용자 정보</v-card-title>
           </v-img>
-          <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === false">
-            <!-- <h3 class="my-2 grey--text" v-if="member.type === 'admin'">[관리자]</h3> -->
-            <h3 class="my-2 grey--text">[관리자]</h3>
-            <div><b>이름:</b> {{ member.name }}</div>
-            <div><b>아이디:</b> {{ member.id }}</div>
-          </v-card-text>
-          <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === true">
-            <!-- <h3 class="my-2 grey--text" v-show="member.type === 'admin'">[관리자22]</h3> -->
-            <h3 class="my-2 grey--text">[관리자22]</h3>
-            <!-- <div><b>이름:</b> {{ member.name }}</div> -->
-            <v-text-field class="pe-6" label="이름" v-model="member.name"></v-text-field>
-            <!-- <div><b>아이디:</b> {{ member.id }}</div> -->
-            <v-text-field class="pe-6" label="아이디" v-model="member.id"></v-text-field>
-          </v-card-text>
+          <v-container v-show="isDelete === false">
+            <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === false">
+              <h3 class="my-2 grey--text" v-if="member.type === 'admin'">[관리자]</h3>
+              <div><b>이름:</b> {{ member.name }}</div>
+              <div><b>아이디:</b> {{ member.id }}</div>
+            </v-card-text>
+            <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === true">
+              <h3 class="my-2 grey--text" v-show="member.type === 'admin'">[관리자]</h3>
+              <v-text-field class="pe-6" label="이름" v-model="member.name"></v-text-field>
+              <v-text-field class="pe-6" label="아이디" v-model="member.id"></v-text-field>
+              <v-text-field class="pe-6" label="현재 비밀번호" type="password" v-model="member.pwd"></v-text-field>
+              <v-text-field class="pe-6" label="새로운 비밀번호" type="password" v-model="new_pwd"></v-text-field>
+            </v-card-text>
+          </v-container>
+          <v-container v-show="isDelete === true">
+            <v-card-text class="text--primary text-left mx-3">
+              <h3 class="my-2 grey--text" v-show="member.type === 'admin'">[관리자]</h3>
+              <div><b>아이디:</b> {{ member.id }}</div>
+              <v-text-field class="pe-6" label="비밀번호" type="password" v-model="member.pwd"></v-text-field>
+            </v-card-text>
+          </v-container>
           <v-card-actions class="mx-3 mb-2">
-            <v-container v-show="this.isModify === false">
-              <v-btn color="orange" text @click="showModify"> 수정 </v-btn>
-              <v-btn color="red" text @click="deleteMember"> 탈퇴 </v-btn>
+            <v-container v-show="isDelete === false">
+              <v-container v-show="this.isModify === false">
+                <v-btn color="orange" text @click="showModify"> 수정 </v-btn>
+                <v-btn color="red" text @click="showDelete"> 탈퇴 </v-btn>
+              </v-container>
+              <v-container v-show="this.isModify === true">
+                <v-btn color="orange" text @click.prevent="modifyMember"> 수정 </v-btn>
+                <v-btn color="grey" text @click="closeModify"> 취소 </v-btn>
+              </v-container>
             </v-container>
-            <v-container v-show="this.isModify === true">
-              <v-btn color="orange" text @click="modifyMember"> 수정 </v-btn>
-              <v-btn color="grey" text @click="closeModify"> 취소 </v-btn>
+            <v-container v-show="isDelete === true">
+              <v-btn color="orange" text @click.prevent="doDeleteMember"> 탈퇴 </v-btn>
+              <v-btn color="grey" text @click="closeDelete"> 취소 </v-btn>
             </v-container>
           </v-card-actions>
         </v-card>
@@ -55,11 +64,12 @@ export default {
   data() {
     return {
       member: {},
+      new_pwd: "",
+      isDelete: false,
     };
   },
 
   created() {
-    // this.$store.commit("memberStore/SET_MODIFY_MODE", false);
     this.SET_MODIFY_MODE(false);
     this.member = { ...this.memberInfo };
   },
@@ -70,7 +80,7 @@ export default {
 
   methods: {
     ...mapMutations(memberStore, ["SET_MODIFY_MODE"]),
-    ...mapActions(memberStore, ["getMemberInfo"]),
+    ...mapActions(memberStore, ["getMemberInfo", "deleteMember"]),
 
     showModify() {
       this.SET_MODIFY_MODE(true);
@@ -78,7 +88,17 @@ export default {
 
     closeModify() {
       this.member = { ...this.memberInfo };
+      this.new_pwd = "";
       this.SET_MODIFY_MODE(false);
+    },
+
+    showDelete() {
+      this.isDelete = true;
+    },
+
+    closeDelete() {
+      this.member = { ...this.memberInfo };
+      this.isDelete = false;
     },
 
     async modifyMember() {
@@ -87,10 +107,10 @@ export default {
       await this.getMemberInfo(accessToken);
     },
 
-    async deleteMember() {
+    async doDeleteMember() {
       console.log("delete Member");
-      let accessToken = sessionStorage.getItem("access-token");
-      await this.deleteMember(accessToken);
+      await this.deleteMember(this.member);
+      this.$router.push({ name: "main" });
     },
   },
 };

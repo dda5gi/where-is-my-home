@@ -14,11 +14,7 @@ const memberStore = {
   getters: {},
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {
-      // console.log("before isLogin : ", state.isLogin);
-      // console.log("change to : ", isLogin);
       state.isLogin = isLogin;
-      // console.log("after isLogin : ", state);
-      // console.log("after isLogin : ", state.isLogin);
     },
     SET_IS_LOGIN_ERROR: (state, isLoginError) => {
       state.isLoginError = isLoginError;
@@ -27,7 +23,6 @@ const memberStore = {
       state.isValidToken = isValidToken;
     },
     SET_MEMBER_INFO: (state, memberInfo) => {
-      state.isLogin = true;
       state.memberInfo = memberInfo;
     },
     SET_MODIFY_MODE: (state, mode) => {
@@ -42,7 +37,6 @@ const memberStore = {
           if (data.message === "success") {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
-            // console.log("login success token created!!!! >> ", accessToken, refreshToken);
             commit("SET_IS_LOGIN", true);
             commit("SET_IS_LOGIN_ERROR", false);
             commit("SET_IS_VALID_TOKEN", true);
@@ -62,22 +56,17 @@ const memberStore = {
 
     async getMemberInfo({ commit, dispatch }, token) {
       let decodeToken = jwtDecode(token);
-      // console.log("2. getMemberInfo() decodeToken :: ", decodeToken);
       await findById(
         decodeToken.id,
         ({ data }) => {
           if (data.message === "success") {
             commit("SET_MEMBER_INFO", data.userInfo);
-            // console.log("3. getMemberInfo data >> ", data.userInfo);
           } else {
             console.log("유저 정보 없음!!!!");
           }
         },
         async (error) => {
-          console.log(
-            "getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status
-          );
+          console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }
@@ -85,13 +74,11 @@ const memberStore = {
     },
 
     async tokenRegeneration({ commit, state }) {
-      // console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
       await tokenRegeneration(
         JSON.stringify(state.memberInfo),
         ({ data }) => {
           if (data.message === "success") {
             let accessToken = data["access-token"];
-            // console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
             sessionStorage.setItem("access-token", accessToken);
             commit("SET_IS_VALID_TOKEN", true);
           }
@@ -99,7 +86,6 @@ const memberStore = {
         async (error) => {
           // HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
           if (error.response.status === 401) {
-            // console.log("갱신 실패");
             // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
             await logout(
               state.memberInfo.id,
@@ -126,8 +112,7 @@ const memberStore = {
       );
     },
 
-    async memberLogout({ commit, state }) {
-      // console.log("memberLogout memberInfo >> ", state.memberInfo);
+    async memberLogout({ state, commit }) {
       await logout(
         state.memberInfo.id,
         ({ data }) => {
@@ -135,7 +120,6 @@ const memberStore = {
             commit("SET_IS_LOGIN", false);
             commit("SET_MEMBER_INFO", null);
             commit("SET_IS_VALID_TOKEN", false);
-            // console.log("isLogin in memberLogout >> ", state.isLogin);
           } else {
             console.log("유저 정보 없음!!!!");
           }
@@ -144,7 +128,6 @@ const memberStore = {
           console.log(error);
         }
       );
-      console.log("isLogin in memberLogout22 >> ", state);
     },
 
     async memberRegist(store, member) {
@@ -167,13 +150,12 @@ const memberStore = {
 
     // async memberModify({ commit }, member) {},
 
-    async deleteMember({ commit }, member) {
-      console.log(commit);
+    async deleteMember({ dispatch }, member) {
       await deleteMember(
         member,
         ({ data }) => {
           if (data.message === "success") {
-            this.memberLogout();
+            dispatch("memberLogout");
           } else {
             console.log("탈퇴 실패");
           }

@@ -61,10 +61,8 @@ export default {
       console.log("Login");
       await this.memberConfirm(this.member);
       let accessToken = sessionStorage.getItem("access-token");
-      // console.log("1. confirm() token >> " + accessToken);
       if (this.isLogin) {
         await this.getMemberInfo(accessToken);
-        // console.log("4. confirm() memberInfo :: ", this.memberInfo);
         this.$router.push({ name: "main" });
       }
     },
