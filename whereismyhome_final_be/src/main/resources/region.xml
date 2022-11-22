@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.region.mapper.RegionMapper">
+
+	<select id="getSido" resultType="regionDto">
+		select sidoname as name ,
+		left(dongCode, 2) as code
+		from dongCode
+		where right(dongcode,8) =
+		00000000
+	</select>
+
+	<select id="getGugun" resultType="regionDto">
+		select gugunname as name , left(dongCode,4) as code
+		from dongCode
+		where
+		right(dongcode,5) = 00000
+		and
+		left(dongcode,2) = #{code}
+		and
+		gugunname is not null
+	</select>
+
+	<select id="getDong" resultType="regionDto">
+		select dongcode as code, dongname as name
+		from dongCode
+		where
+		left(dongcode,4) = #{code}
+		and
+		dongname is not null
+	</select>
+</mapper>
