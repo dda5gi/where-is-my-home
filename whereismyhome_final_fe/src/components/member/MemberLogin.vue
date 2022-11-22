@@ -22,8 +22,8 @@
               ></v-text-field>
             </v-flex>
             <v-flex class="text-xs-center" mt-5>
-              <v-btn color="primary" type="submit" class="mx-2"> 로그인 </v-btn>
-              <v-btn color="primary-outline" type="button" @click="mvRegist" class="mx-2"> 회원가입 </v-btn>
+              <v-btn color="#6667ab" dark type="submit" class="mx-2"> 로그인 </v-btn>
+              <v-btn color="#dbd6d2" dark type="button" @click="mvRegist" class="mx-2"> 회원가입 </v-btn>
             </v-flex>
           </v-layout>
         </v-form>
