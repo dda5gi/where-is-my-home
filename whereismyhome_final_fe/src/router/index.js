@@ -34,6 +34,24 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/notice",
+    name: "notice",
+    redirect: "/notice/list",
+    component: () => import("@/views/AppNotice"),
+    children: [
+      {
+        path: "list",
+        name: "noticelist",
+        component: () => import("@/components/notice/NoticeList"),
+      },
+      {
+        path: "view/:{articleNo}",
+        name: "noticeview",
+        component: () => import("@/components/notice/NoticeView"),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
