@@ -46,7 +46,7 @@ const routes = [
         component: () => import("@/components/notice/NoticeList"),
       },
       {
-        path: "view/:{articleNo}",
+        path: "view/:articleNo",
         name: "noticeview",
         component: () => import("@/components/notice/NoticeView"),
       },
@@ -80,9 +80,14 @@ const routes = [
         component: () => import("@/components/qna/QnaView"),
       },
       {
-        path: "write",
+        path: "write/question",
         name: "qnawritequestion",
         component: () => import("@/components/qna/QnaWriteQuestion"),
+      },
+      {
+        path: "write/answer",
+        name: "qnawriteanswer",
+        component: () => import("@/components/qna/QnaWriteAnswer"),
       },
     ],
   },

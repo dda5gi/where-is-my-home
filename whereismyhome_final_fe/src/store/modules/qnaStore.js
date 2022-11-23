@@ -1,4 +1,12 @@
-import { listQna, getQuestion, getAnswer, deleteQuestion, modifyQuestion, deleteAnswer, modifyAnswer } from "@/api/qna";
+import {
+  listQna,
+  getQuestion,
+  getAnswer,
+  deleteQuestion,
+  modifyQuestion,
+  deleteAnswer,
+  modifyAnswer,
+} from "@/api/qna";
 
 const qnaStore = {
   namespaced: true,
@@ -8,7 +16,6 @@ const qnaStore = {
     question: {},
     answer: {},
     isModify: false,
-    questions: [],
   },
   getters: {},
   mutations: {

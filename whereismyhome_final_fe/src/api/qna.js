@@ -39,6 +39,11 @@ async function writeQuestion(article, success, fail) {
   await api.post(`/qna/question`, article).then(success).catch(fail);
 }
 
+async function writeAnswer(article, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  await api.post(`/qna/answer`, article).then(success).catch(fail);
+}
+
 export {
   listQna,
   getQuestion,
@@ -48,4 +53,5 @@ export {
   deleteAnswer,
   modifyAnswer,
   writeQuestion,
+  writeAnswer,
 };

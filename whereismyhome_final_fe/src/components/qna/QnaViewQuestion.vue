@@ -18,6 +18,14 @@
         class="mx-4"
         color="#6667AB"
         dark
+        v-show="this.isLogin"
+        @click.prevent="moveWriteAnswer"
+        >답변 작성</v-btn
+      >
+      <v-btn
+        class="me-4"
+        color="#6667AB"
+        dark
         v-show="this.isLogin && this.memberInfo.id === this.question.memberId"
         @click.prevent="showQnaQuestionModify"
         >글 수정</v-btn
@@ -57,6 +65,10 @@ export default {
   methods: {
     ...mapMutations(qnaStore, ["SET_IS_MODIFY"]),
     ...mapActions(qnaStore, ["getArticleQuestion", "deleteArticleQuestion"]),
+
+    moveWriteAnswer() {
+      this.$router.push({ name: "qnawriteanswer" });
+    },
 
     moveQnaList() {
       this.$router.push({ name: "qnalist" });

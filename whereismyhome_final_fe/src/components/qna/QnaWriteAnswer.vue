@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <h1 class="mb-4">질문 작성 페이지</h1>
+    <h1 class="mb-4">답변 작성 페이지</h1>
     <v-card>
       <v-text-field
         class="mx-4 pt-5"
@@ -29,31 +29,34 @@
 
 <script>
 import { mapState } from "vuex";
-import { writeQuestion } from "@/api/qna";
+import { writeAnswer } from "@/api/qna";
 
 const memberStore = "memberStore";
+const qnaStore = "qnaStore";
 
 export default {
-  name: "QnaWriteQuestion",
+  name: "QnaWriteAnswer",
 
   data() {
     return {
       articleType: "",
-      article: { title: "", content: "", memberId: "" },
+      article: { title: "", content: "", memberId: "", questionArticleNo: "" },
     };
   },
 
   created() {
     this.article.memberId = this.memberInfo.id;
+    this.article.questionArticleNo = this.question.articleNo;
   },
 
   computed: {
     ...mapState(memberStore, ["memberInfo"]),
+    ...mapState(qnaStore, ["question"]),
   },
 
   methods: {
     async write() {
-      await writeQuestion(
+      await writeAnswer(
         this.article,
         ({ data }) => {
           if (data.msg === "success") {
