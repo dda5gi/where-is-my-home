@@ -53,14 +53,10 @@ export default {
     ...mapActions(qnaStore, ["modifyArticleAnswer", "getArticleAnswer"]),
 
     qnaAnswerModify() {
-      console.log("답변 수정1");
       console.log(this.article);
       this.modifyArticleAnswer(this.article);
-      console.log("답변 수정2");
       this.getArticleAnswer(this.answer.articleNo);
-      console.log("답변 수정3");
       this.SET_IS_MODIFY(false);
-      console.log("답변 수정4");
     },
 
     closeQnaAnswerModify() {
