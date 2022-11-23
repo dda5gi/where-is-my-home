@@ -34,7 +34,8 @@
 
 	<select id="listQuestion" resultMap="question">
 		select article_no, title, content, register_time, hit, member_id
-		from question;
+		from question
+		order by article_no desc;
 	</select>
 	
 	<select id="listAnswer" resultMap="answer" parameterType="int">

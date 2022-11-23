@@ -92,8 +92,8 @@ public class QnaController {
 	public ResponseEntity<ResponseDto> getQuestion(@PathVariable("articleNo") int articleNo) throws Exception {
 		logger.info("QnA 질문 글 보기 : {}", articleNo);
 		ResponseDto responseDto = new ResponseDto();
-		responseDto.addPayload("article", qnaService.getQuestion(articleNo));
 		qnaService.updateHitQuestion(articleNo);
+		responseDto.addPayload("article", qnaService.getQuestion(articleNo));
 		responseDto.setMsg(SUCCESS);
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
@@ -102,8 +102,8 @@ public class QnaController {
 	public ResponseEntity<ResponseDto> getAnswer(@PathVariable("articleNo") int articleNo) throws Exception {
 		logger.info("QnA 답변 글 보기 : {}", articleNo);
 		ResponseDto responseDto = new ResponseDto();
-		responseDto.addPayload("article", qnaService.getAnswer(articleNo));
 		qnaService.updateHitAnswer(articleNo);
+		responseDto.addPayload("article", qnaService.getAnswer(articleNo));
 		responseDto.setMsg(SUCCESS);
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}

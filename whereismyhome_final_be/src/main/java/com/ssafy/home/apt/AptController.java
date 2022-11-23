@@ -1,15 +1,13 @@
 package com.ssafy.home.apt;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.home.apt.service.AptService;
@@ -26,9 +24,9 @@ public class AptController {
 	@Autowired
 	AptService aptService;
 
-	//&regCode=1111011500
-	@GetMapping("/list/{dongcode}")
-	public ResponseEntity<ResponseDto> getList(@PathVariable("dongcode") String dongCode) throws Exception{
+	//&dongCode=1111011500
+	@GetMapping("/list")
+	public ResponseEntity<ResponseDto> getList(@RequestParam String dongCode) throws Exception{
 		logger.info("아파트 리스트 호출");
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.addPayload("list", aptService.getAptList(dongCode));

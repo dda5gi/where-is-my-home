@@ -58,6 +58,12 @@ const routes = [
     ],
   },
   {
+    path: "/map",
+    name: "map",
+    // redirect: "/",
+    component: () => import("@/views/AppMap"),
+  },
+  {
     path: "/qna",
     name: "qna",
     redirect: "/qna/list",
