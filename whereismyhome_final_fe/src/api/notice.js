@@ -21,6 +21,7 @@ async function modifyNotice(article, success, fail) {
 }
 
 async function deleteNotice(articleNo, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.delete(`/notice/${articleNo}`).then(success).catch(fail);
 }
 

@@ -14,14 +14,14 @@
     </v-card>
     <v-layout class="float-end mt-3 mx-2">
       <v-btn class="mx-4" color="#6667AB" dark @click.prevent="showModifyNotice">수정</v-btn>
-      <v-btn class="me-4" color="#686369" dark>삭제</v-btn>
+      <v-btn class="me-4" color="#686369" dark @click.prevent="deleteNotice">삭제</v-btn>
       <v-btn color="#f1f0ec" @click.prevent="moveNoticeList">목록으로</v-btn>
     </v-layout>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 const noticeStore = "noticeStore";
 
@@ -29,7 +29,7 @@ export default {
   name: "NoticeViewItem",
 
   computed: {
-    ...mapState(noticeStore, ["notice"]),
+    ...mapState(noticeStore, ["notice", "page"]),
 
     message() {
       if (this.notice.content) return this.notice.content.split("\n").join("<br>");
@@ -39,6 +39,7 @@ export default {
 
   methods: {
     ...mapMutations(noticeStore, ["SET_IS_MODIFY"]),
+    ...mapActions(noticeStore, ["deleteArticle"]),
 
     showModifyNotice() {
       this.SET_IS_MODIFY(true);
@@ -46,6 +47,11 @@ export default {
 
     moveNoticeList() {
       this.$router.push({ name: "noticelist" });
+    },
+
+    async deleteNotice() {
+      await this.deleteArticle();
+      this.$router.push({ name: "noticelist", params: { pageNo: this.page } });
     },
   },
 };

@@ -1,4 +1,4 @@
-import { listNotice, getNotice, modifyNotice } from "@/api/notice";
+import { listNotice, getNotice, modifyNotice, deleteNotice } from "@/api/notice";
 
 const noticeStore = {
   namespaced: true,
@@ -71,6 +71,23 @@ const noticeStore = {
         (error) => {
           console.log(error);
           alert("공지사항이 수정되지 않았습니다.");
+        }
+      );
+    },
+
+    async deleteArticle({ state, commit }) {
+      await deleteNotice(
+        state.notice.articleNo,
+        ({ data }) => {
+          if (data.msg === "success") {
+            commit("SET_NOTICE_NO", 0);
+            commit("SET_NOTICE", { title: "", content: "" });
+            alert("공지사항이 삭제되었습니다.");
+          }
+        },
+        (error) => {
+          console.log(error);
+          alert("공지사항이 삭제되지 않았습니다.");
         }
       );
     },
