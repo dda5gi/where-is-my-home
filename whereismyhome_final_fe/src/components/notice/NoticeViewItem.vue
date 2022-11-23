@@ -46,7 +46,7 @@ export default {
     },
 
     moveNoticeList() {
-      this.$router.push({ name: "noticelist" });
+      this.$router.push({ name: "noticelist", params: { pageNo: this.page } });
     },
 
     async deleteNotice() {
