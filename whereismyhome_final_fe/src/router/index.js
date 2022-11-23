@@ -57,6 +57,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/map",
+    name: "map",
+    // redirect: "/",
+    component: () => import("@/views/AppMap"),
+  },
 ];
 
 const router = new VueRouter({

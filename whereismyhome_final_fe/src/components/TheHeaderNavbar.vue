@@ -30,7 +30,6 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
-    <v-main> </v-main>
   </div>
 </template>
 
@@ -50,6 +49,7 @@ export default {
         { title: "홈", path: "/", icon: "home" },
         { title: "공지사항", path: "/notice", icon: "campaign" },
         { title: "QnA", path: "/qna", icon: "question_answer" },
+        { title: "지도", path: "/map", icon: "map" },
       ],
     };
   },
