@@ -16,6 +16,7 @@ async function getNotice(articleno, success, fail) {
 }
 
 async function modifyNotice(article, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.put(`/notice`, JSON.stringify(article)).then(success).catch(fail);
 }
 

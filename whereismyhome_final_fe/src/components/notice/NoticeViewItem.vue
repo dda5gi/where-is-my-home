@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 const noticeStore = "noticeStore";
 
@@ -38,8 +38,10 @@ export default {
   },
 
   methods: {
+    ...mapMutations(noticeStore, ["SET_IS_MODIFY"]),
+
     showModifyNotice() {
-      this.$emit("showModifyNotice");
+      this.SET_IS_MODIFY(true);
     },
 
     moveNoticeList() {

@@ -1,4 +1,4 @@
-import { listNotice, getNotice } from "@/api/notice";
+import { listNotice, getNotice, modifyNotice } from "@/api/notice";
 
 const noticeStore = {
   namespaced: true,
@@ -55,6 +55,22 @@ const noticeStore = {
         },
         (error) => {
           console.log(error);
+        }
+      );
+    },
+
+    async modifyArticle({ commit }, article) {
+      await modifyNotice(
+        article,
+        ({ data }) => {
+          if (data.msg === "success") {
+            console.log(commit);
+            alert("공지사항이 수정되었습니다.");
+          }
+        },
+        (error) => {
+          console.log(error);
+          alert("공지사항이 수정되지 않았습니다.");
         }
       );
     },
