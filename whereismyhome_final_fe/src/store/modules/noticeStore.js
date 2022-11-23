@@ -1,4 +1,4 @@
-import { listNotice } from "@/api/notice";
+import { listNotice, getNotice } from "@/api/notice";
 
 const noticeStore = {
   namespaced: true,
@@ -31,6 +31,9 @@ const noticeStore = {
     SET_IS_MODIFY: (state, flag) => {
       state.isModify = flag;
     },
+    SET_NOTICE: (state, notice) => {
+      state.notice = notice;
+    },
   },
 
   actions: {
@@ -40,6 +43,20 @@ const noticeStore = {
           commit("SET_LIST", data.payload.list);
         }
       });
+    },
+
+    async getArticle({ state, commit }) {
+      await getNotice(
+        state.noticeNo,
+        ({ data }) => {
+          if (data.msg === "success") {
+            commit("SET_NOTICE", data.payload.article);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
 };

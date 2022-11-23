@@ -46,7 +46,7 @@ const routes = [
         component: () => import("@/components/notice/NoticeList"),
       },
       {
-        path: "view/:articleNo",
+        path: "view",
         name: "noticeview",
         component: () => import("@/components/notice/NoticeView"),
       },

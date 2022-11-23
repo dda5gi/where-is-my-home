@@ -83,6 +83,7 @@ export default {
   created() {
     const parse = parseInt(this.$route.params.pageNo);
     this.selectedPageNo = parse;
+    this.SET_PAGE(parse);
     this.onSelectItemsPerPage();
     this.onSelectPage();
     this.getList();
@@ -104,7 +105,7 @@ export default {
       "SET_NOTICE_NO",
       "SET_IS_MODIFY",
     ]),
-    ...mapActions(noticeStore, ["getList"]),
+    ...mapActions(noticeStore, ["getList", "getArticle"]),
 
     onSelectItemsPerPage() {
       const parse = parseInt(this.itemSelected);
@@ -115,9 +116,10 @@ export default {
       this.SET_PAGE(this.selectedPageNo);
     },
 
-    viewNotice(element) {
+    async viewNotice(element) {
       this.SET_NOTICE_NO(element.articleNo);
       this.SET_IS_MODIFY(false);
+      await this.getArticle();
       this.$router.push({ name: "noticeview" });
     },
   },
