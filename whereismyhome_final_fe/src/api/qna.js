@@ -34,4 +34,18 @@ async function modifyAnswer(article, success, fail) {
   await api.put(`/qna/answer`, article).then(success).catch(fail);
 }
 
-export { listQna, getQuestion, getAnswer, deleteQuestion, modifyQuestion, deleteAnswer, modifyAnswer };
+async function writeQuestion(article, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  await api.post(`/qna/question`, article).then(success).catch(fail);
+}
+
+export {
+  listQna,
+  getQuestion,
+  getAnswer,
+  deleteQuestion,
+  modifyQuestion,
+  deleteAnswer,
+  modifyAnswer,
+  writeQuestion,
+};
