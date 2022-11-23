@@ -20,7 +20,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #6768ab;
+  background: #f1f0ec;
 }
 
 a.router-link-exact-active {
