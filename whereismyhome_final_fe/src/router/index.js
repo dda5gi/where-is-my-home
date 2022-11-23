@@ -37,11 +37,11 @@ const routes = [
   {
     path: "/notice",
     name: "notice",
-    redirect: "/notice/list",
+    // redirect: "/notice/list",
     component: () => import("@/views/AppNotice"),
     children: [
       {
-        path: "list",
+        path: "list/:pageNo",
         name: "noticelist",
         component: () => import("@/components/notice/NoticeList"),
       },

@@ -47,7 +47,7 @@ export default {
       sidebar: true,
       menuItems: [
         { title: "홈", path: "/", icon: "home" },
-        { title: "공지사항", path: "/notice", icon: "campaign" },
+        { title: "공지사항", path: "/notice/list/1", icon: "campaign" },
         { title: "QnA", path: "/qna", icon: "question_answer" },
         { title: "지도", path: "/map", icon: "map" },
       ],
