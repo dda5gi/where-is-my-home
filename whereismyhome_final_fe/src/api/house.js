@@ -18,4 +18,8 @@ function houseList(params, success, fail) {
   api.get(`/apt/list`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList };
+function dealList(params, success, fail) {
+  api.get(`/apt/deal`, { params: params }).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, dealList };
