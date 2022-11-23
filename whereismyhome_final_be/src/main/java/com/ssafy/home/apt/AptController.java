@@ -26,7 +26,7 @@ public class AptController {
 
 	//&dongCode=1111011500
 	@GetMapping("/list")
-	public ResponseEntity<ResponseDto> getList(@RequestParam String dongCode) throws Exception{
+	public ResponseEntity<ResponseDto> getAptList(@RequestParam String dongCode) throws Exception{
 		logger.info("아파트 리스트 호출");
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.addPayload("list", aptService.getAptList(dongCode));
@@ -34,4 +34,12 @@ public class AptController {
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
+//	@GetMapping("/deal")
+//	public ResponseEntity<ResponseDto> getAptDeal(@RequestParam String aptCode) throws Exception{
+//		logger.info("아파트 면적 별 거래 기록 호출");
+//		ResponseDto responseDto = new ResponseDto();
+//		responseDto.addPayload("list", aptService.getAptDeal(aptCode));
+//		responseDto.setMsg(SUCCESS);
+//		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
+//	}
 }

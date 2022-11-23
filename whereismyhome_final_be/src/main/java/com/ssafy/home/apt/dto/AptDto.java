@@ -2,6 +2,7 @@ package com.ssafy.home.apt.dto;
 
 public class AptDto {
 	private String aptName;
+	private String aptCode;
 	private String dong;
 	private String jibun;
 	private String lat;
@@ -11,9 +12,10 @@ public class AptDto {
 		super();
 	}
 
-	public AptDto(String aptName, String dong, String jibun, String lat, String lng) {
+	public AptDto(String aptName, String aptCode, String dong, String jibun, String lat, String lng) {
 		super();
 		this.aptName = aptName;
+		this.aptCode = aptCode;
 		this.dong = dong;
 		this.jibun = jibun;
 		this.lat = lat;
@@ -26,6 +28,14 @@ public class AptDto {
 
 	public void setAptName(String aptName) {
 		this.aptName = aptName;
+	}
+
+	public String getAptCode() {
+		return aptCode;
+	}
+
+	public void setAptCode(String aptCode) {
+		this.aptCode = aptCode;
 	}
 
 	public String getDong() {
@@ -62,8 +72,9 @@ public class AptDto {
 
 	@Override
 	public String toString() {
-		return "AptDto [aptName=" + aptName + ", dong=" + dong + ", jibun=" + jibun + ", lat=" + lat + ", lng=" + lng
-				+ "]";
+		return "AptDto [aptName=" + aptName + ", aptCode=" + aptCode + ", dong=" + dong + ", jibun=" + jibun + ", lat="
+				+ lat + ", lng=" + lng + "]";
 	}
+
 
 }

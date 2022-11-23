@@ -4,7 +4,7 @@
 <mapper namespace="com.ssafy.home.apt.mapper.AptMapper">
 
 	<select id="getAptList" resultType="aptDto">
-		select apartmentName as aptName, dong, jibun, lat, lng
+		select apartmentName as aptName, aptCode, dong, jibun, lat, lng
 		from houseinfo
 		where
 		dongCode = #{dongCode}

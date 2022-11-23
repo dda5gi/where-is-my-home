@@ -3,6 +3,7 @@
     <v-col>
       <v-card color="blue-grey lighten-5">
         <v-card-title>
+          <v-icon>apartment</v-icon>
           <h3>{{ house.aptName }}</h3>
           <v-card-subtitle> - {{ house.dong + " " + house.jibun }} </v-card-subtitle>
         </v-card-title>
