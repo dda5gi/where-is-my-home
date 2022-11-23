@@ -4,7 +4,7 @@
     <v-card>
       <v-text-field
         class="mx-4 pt-5"
-        v-model="this.notice.title"
+        v-model="article.title"
         placeholder="제목"
         rows="1"
         row-height="10"
@@ -12,18 +12,18 @@
       ></v-text-field>
       <v-textarea
         class="mx-4"
-        v-model="this.notice.content"
+        v-model="article.content"
         placeholder="내용"
         rows="4"
         row-height="30"
         outlined
         auto-grow
       ></v-textarea>
-      <v-layout class="float-right mt-5">
-        <v-btn class="mx-4" color="#6667AB" dark @click.prevent="write">글 작성</v-btn>
-        <v-btn color="#f1f0ec" @click.prevent="moveNoticeList">목록으로</v-btn>
-      </v-layout>
     </v-card>
+    <v-layout class="float-right mt-5">
+      <v-btn class="mx-4" color="#6667AB" dark @click.prevent="write">글 작성</v-btn>
+      <v-btn color="#f1f0ec" @click.prevent="moveNoticeList">목록으로</v-btn>
+    </v-layout>
   </v-main>
 </template>
 
@@ -35,21 +35,21 @@ export default {
 
   data() {
     return {
-      notice: { title: "", content: "" },
+      article: { title: "", content: "" },
     };
   },
 
   methods: {
     write() {
       writeNotice(
-        this.notice,
+        this.article,
         ({ data }) => {
           if (data.msg === "success") {
             alert("글 작성에 성공했습니다.");
           } else {
             alert("글 작성에 실패했습니다.");
           }
-          this.$router.push({ name: "noticelist" });
+          this.$router.push({ name: "noticelist", params: { pageNo: 1 } });
         },
         (error) => {
           console.log(error);

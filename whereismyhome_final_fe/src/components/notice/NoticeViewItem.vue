@@ -13,8 +13,22 @@
       </v-card-text>
     </v-card>
     <v-layout class="float-end mt-3 mx-2">
-      <v-btn class="mx-4" color="#6667AB" dark @click.prevent="showModifyNotice">수정</v-btn>
-      <v-btn class="me-4" color="#686369" dark @click.prevent="deleteNotice">삭제</v-btn>
+      <v-btn
+        class="mx-4"
+        color="#6667AB"
+        dark
+        @click.prevent="showModifyNotice"
+        v-show="this.isLogin && this.memberInfo.type === 'admin'"
+        >수정
+      </v-btn>
+      <v-btn
+        class="me-4"
+        color="#686369"
+        dark
+        @click.prevent="deleteNotice"
+        v-show="this.isLogin && this.memberInfo.type === 'admin'"
+        >삭제
+      </v-btn>
       <v-btn color="#f1f0ec" @click.prevent="moveNoticeList">목록으로</v-btn>
     </v-layout>
   </div>
@@ -23,12 +37,14 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
+const memberStore = "memberStore";
 const noticeStore = "noticeStore";
 
 export default {
   name: "NoticeViewItem",
 
   computed: {
+    ...mapState(memberStore, ["isLogin", "memberInfo"]),
     ...mapState(noticeStore, ["notice", "page"]),
 
     message() {

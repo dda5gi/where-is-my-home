@@ -43,13 +43,20 @@
     <div class="text-center pt-2">
       <v-pagination v-model="selectedPageNo" :length="pageCount"></v-pagination>
     </div>
-    <v-btn class="float-right mx-2 mt-1" color="#dbd6d2" @click.prevent="">글쓰기</v-btn>
+    <v-btn
+      class="float-right mx-2 mt-1"
+      color="#dbd6d2"
+      @click.prevent="showWrite"
+      v-show="this.isLogin && this.memberInfo.type === 'admin'"
+      >글쓰기</v-btn
+    >
   </v-main>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
+const memberStore = "memberStore";
 const noticeStore = "noticeStore";
 
 export default {
@@ -90,6 +97,7 @@ export default {
   },
 
   computed: {
+    ...mapState(memberStore, ["isLogin", "memberInfo"]),
     ...mapState(noticeStore, ["itemsPerPage", "page", "list"]),
   },
 
@@ -121,6 +129,10 @@ export default {
       this.SET_IS_MODIFY(false);
       await this.getArticle();
       this.$router.push({ name: "noticeview" });
+    },
+
+    showWrite() {
+      this.$router.push({ name: "noticewrite" });
     },
   },
 };

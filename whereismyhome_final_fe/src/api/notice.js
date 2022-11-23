@@ -7,6 +7,7 @@ async function listNotice(success, fail) {
 }
 
 async function writeNotice(notice, success, fail) {
+  console.log("hihi");
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.post(`/notice`, JSON.stringify(notice)).then(success).catch(fail);
 }
