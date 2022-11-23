@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "AppNotice",
+  name: "AppQna",
 };
 </script>
 

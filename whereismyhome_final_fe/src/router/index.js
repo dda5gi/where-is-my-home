@@ -57,6 +57,29 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/qna",
+    name: "qna",
+    redirect: "/qna/list",
+    component: () => import("@/views/AppQna"),
+    children: [
+      {
+        path: "list",
+        name: "qnalist",
+        component: () => import("@/components/qna/QnaList"),
+      },
+      {
+        path: "view",
+        name: "qnaview",
+        component: () => import("@/components/qna/QnaView"),
+      },
+      // {
+      //   path: "write",
+      //   name: "noticewrite",
+      //   component: () => import("@/components/notice/NoticeWrite"),
+      // },
+    ],
+  },
 ];
 
 const router = new VueRouter({

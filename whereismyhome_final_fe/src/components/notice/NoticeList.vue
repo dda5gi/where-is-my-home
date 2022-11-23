@@ -3,7 +3,7 @@
     <h1 class="mb-5">글 목록</h1>
     <v-layout class="mt-5 align-center">
       <v-btn
-        class="mx-4"
+        class="mx-1"
         color="#dbd6d2"
         @click.prevent="showWrite"
         v-show="this.memberInfo != null && this.memberInfo.type === 'admin'"
