@@ -2,7 +2,7 @@
   <v-main>
     <h1 class="mb-5">QnA 목록</h1>
     <v-layout class="mt-5 align-center">
-      <v-btn class="mx-1" color="#dbd6d2" @click.prevent="showWrite" v-show="memberInfo != null">글쓰기</v-btn>
+      <v-btn class="mx-1" color="#dbd6d2" @click.prevent="showQnaWrite" v-show="memberInfo != null">질문 작성</v-btn>
       <v-spacer></v-spacer>
       <v-text-field
         id="searchBar"
@@ -74,6 +74,10 @@ export default {
         this.getArticleAnswer(this.answer.articleNo);
       }
       this.$router.push({ name: "qnaview" });
+    },
+
+    showQnaWrite() {
+      this.$router.push({ name: "qnawritequestion" });
     },
   },
 };

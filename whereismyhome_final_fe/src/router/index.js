@@ -79,11 +79,11 @@ const routes = [
         name: "qnaview",
         component: () => import("@/components/qna/QnaView"),
       },
-      // {
-      //   path: "write",
-      //   name: "noticewrite",
-      //   component: () => import("@/components/notice/NoticeWrite"),
-      // },
+      {
+        path: "write",
+        name: "qnawritequestion",
+        component: () => import("@/components/qna/QnaWriteQuestion"),
+      },
     ],
   },
 ];

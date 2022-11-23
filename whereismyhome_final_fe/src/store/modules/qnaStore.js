@@ -8,6 +8,7 @@ const qnaStore = {
     question: {},
     answer: {},
     isModify: false,
+    questions: [],
   },
   getters: {},
   mutations: {
