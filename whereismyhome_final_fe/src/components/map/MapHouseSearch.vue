@@ -2,7 +2,6 @@
   <v-container>
     <v-row align="center">
       <v-col cols="1">
-        <!-- <v-subheader><h3>지역 선택 :</h3></v-subheader> -->
         <h3>지역 선택 :</h3>
       </v-col>
       <v-col cols="2">
@@ -71,9 +70,10 @@ export default {
     this.CLEAR_DONG_LIST();
     this.CLEAR_HOUSE_LIST();
     this.getSido();
+    this.getFavorList();
   },
   methods: {
-    ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouseList"]),
+    ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouseList", "getFavorList"]),
     ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_HOUSE_LIST"]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
