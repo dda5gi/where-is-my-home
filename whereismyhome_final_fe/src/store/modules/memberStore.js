@@ -1,6 +1,14 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, logout, tokenRegeneration, regist, deleteMember } from "@/api/member";
+import {
+  login,
+  findById,
+  logout,
+  tokenRegeneration,
+  regist,
+  deleteMember,
+  modifyMember,
+} from "@/api/member";
 
 const memberStore = {
   namespaced: true,
@@ -70,7 +78,10 @@ const memberStore = {
           }
         },
         async (error) => {
-          console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+          console.log(
+            "getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
+            error.response.status
+          );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }
@@ -104,64 +115,6 @@ const memberStore = {
                 commit("SET_MEMBER_INFO", null);
                 commit("SET_IS_VALID_TOKEN", false);
                 router.push({ name: "login" });
-              },
-              (error) => {
-                console.log(error);
-                commit("SET_IS_LOGIN", false);
-                commit("SET_MEMBER_INFO", null);
-              }
-            );
-          }
-        }
-      );
-    },
-
-    async getMemberInfoWithOutLogIn({ commit, dispatch }, token) {
-      let decodeToken = jwtDecode(token);
-      await findById(
-        decodeToken.id,
-        ({ data }) => {
-          if (data.message === "success") {
-            commit("SET_MEMBER_INFO", data.userInfo);
-          } else {
-            console.log("유저 정보 없음!!!!");
-          }
-        },
-        async (error) => {
-          if (error.response.status === 401) {
-            console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
-            commit("SET_IS_VALID_TOKEN", false);
-            await dispatch("tokenRegenerationWithOutLogIn");
-          } else {
-            console.log("정보 조회 실패");
-          }
-        }
-      );
-    },
-
-    async tokenRegenerationWithOutLogIn({ commit, state }) {
-      await tokenRegeneration(
-        JSON.stringify(state.memberInfo),
-        ({ data }) => {
-          if (data.message === "success") {
-            let accessToken = data["access-token"];
-            sessionStorage.setItem("access-token", accessToken);
-            commit("SET_IS_VALID_TOKEN", true);
-          }
-        },
-        async (error) => {
-          // HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
-          if (error.response.status === 401) {
-            // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
-            await logout(
-              state.memberInfo.id,
-              ({ data }) => {
-                if (data.message === "success") {
-                  console.log("리프레시 토큰 제거 성공");
-                } else {
-                  console.log("리프레시 토큰 제거 실패");
-                }
-                commit("SET_IS_VALID_TOKEN", false);
               },
               (error) => {
                 console.log(error);
@@ -210,9 +163,22 @@ const memberStore = {
       );
     },
 
-    // async memberModify({ commit }, member) {},
+    async memberModify({ commit, dispatch }, member) {
+      await modifyMember(
+        member,
+        ({ data }) => {
+          if (data.message === "success") {
+            let accessToken = sessionStorage.getItem("access-token");
+            dispatch("getMemberInfo", accessToken);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      ).then(commit("SET_SHOW_MODE", "info"));
+    },
 
-    async deleteMember({ dispatch }, member) {
+    async memberDelete({ dispatch }, member) {
       await deleteMember(
         member,
         ({ data }) => {
@@ -242,6 +208,7 @@ const memberStore = {
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
           } else {
+            console.log(data.message);
             commit("SET_IS_CORRECT_PASSWORD", false);
           }
         },

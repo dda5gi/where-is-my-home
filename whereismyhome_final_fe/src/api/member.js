@@ -28,4 +28,9 @@ async function deleteMember(member, success, fail) {
   await api.post(`/user/delete`, member).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, regist, deleteMember };
+async function modifyMember(member, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  await api.put(`/user`, member).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, regist, deleteMember, modifyMember };
