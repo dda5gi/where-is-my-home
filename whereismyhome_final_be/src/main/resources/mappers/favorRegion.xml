@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.region.mapper.RegionMapper">
+
+	<select id="favorRegionList" resultType="favorRegionDto">
+		select member_id as memberId, dongcode_dongCode as dongCode, region_name as regionName
+		from favoriteregion 
+		where member_id = #{id}
+	</select>
+	
+	<select id="getRegionName" resultType="map">
+		SELECT dongcode, concat(sidoName, " ", gugunName, " ", dongName) as regionname
+		FROM dongcode
+		WHERE dongcode = #{dongCode};
+	</select>
+	
+	<select id="getFavorRegion" resultType="favorRegionDto">
+		select member_id as memberId, dongcode_dongCode as dongCode, region_name as regionName
+		from favoriteregion 
+		where dongcode_dongCode = #{dongCode}
+	</select>
+	
+	<insert id="registerFavorRegion" parameterType="favorRegionDto">
+		insert into favoriteregion (member_id, dongcode_dongCode, region_name, register_time)
+		values (#{memberId}, #{dongCode}, #{regionName}, now())
+	</insert>
+
+	<delete id="deleteFavorRegion" parameterType="favorRegionDto">
+		delete from favoriteregion
+		where member_id = #{memberId} and dongcode_dongCode = #{dongCode}
+	</delete>
+</mapper>

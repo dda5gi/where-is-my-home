@@ -1,4 +1,4 @@
-import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
+import { sidoList, gugunList, dongList, houseList, favorList } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -7,6 +7,7 @@ const houseStore = {
     guguns: [{ value: null, text: "구군선택" }],
     dongs: [{ value: null, text: "동선택" }],
     houses: [],
+    favors: [],
     house: null,
   },
   getters: {},
@@ -23,6 +24,9 @@ const houseStore = {
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
       state.house = null;
+    },
+    CLEAR_FAVOR_LIST(state) {
+      state.favors = [];
     },
 
     SET_SIDO_LIST(state, sidos) {
@@ -45,6 +49,9 @@ const houseStore = {
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
+    },
+    SET_FAVOR_LIST(state, favors) {
+      state.favors = favors;
     },
   },
   actions: {
@@ -101,6 +108,17 @@ const houseStore = {
     detailHouse: ({ commit }, house) => {
       // 나중에 house.일련번호를 이용하여 API 호출
       commit("SET_DETAIL_HOUSE", house);
+    },
+    getFavorList: ({ commit }) => {
+      favorList(
+        ({ data }) => {
+          commit("SET_FAVOR_LIST", data.payload.list);
+          console.log("FAVOR LIST:", data.payload.list);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
 };

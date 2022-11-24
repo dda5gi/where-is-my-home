@@ -1,13 +1,12 @@
 <template>
   <v-main>
-    <!-- <router-view class="container"></router-view> -->
     <map-house-search></map-house-search>
     <v-container>
       <v-row>
         <v-col cols="4">
-          <h1>아파트 목록</h1>
+          <h2>아파트 목록</h2>
           <v-divider></v-divider>
-          <map-house-list></map-house-list>
+          <map-house-list @highLightMarker="highLightMarker"></map-house-list>
         </v-col>
         <v-col cols="8">
           <div id="map"></div>
@@ -34,6 +33,7 @@ export default {
       map: null,
       markerDatas: [],
       markers: [],
+      infoWindow: null,
       centerPos: null,
     };
   },
@@ -44,7 +44,6 @@ export default {
 
   watch: {
     houses(newHouses) {
-      console.log("HOUSE DATA WATCH CALLED");
       if (newHouses.length > 0) {
         this.removeMarkers();
         this.loadMarkers(newHouses);
@@ -64,6 +63,7 @@ export default {
     },
 
     removeMarkers() {
+      // 마커 지우기
       if (this.markers.length > 0) {
         this.markers.forEach((m) => {
           m.setMap(null);
@@ -73,7 +73,6 @@ export default {
 
     loadMarkers(houses) {
       // 아파트 정보 불러온 마커에서 쓸 수 있게 변환
-      console.log("UPDATE_MARKERS CALLED");
       console.log(houses);
       this.markerDatas = [];
       houses.forEach((element) => {
@@ -112,6 +111,32 @@ export default {
       lat = lat / this.houses.length;
       lng = lng / this.houses.length;
       return new kakao.maps.LatLng(lat, lng);
+    },
+
+    // 마커에 인포 윈도우 띄우기
+    // 아파트이름에 해당하는 마커를 찾아서 인포 띄우고 위치 이동시킴
+    highLightMarker(aptName) {
+      console.log(aptName);
+      if (this.infoWindow != null) {
+        this.infoWindow.close();
+      }
+      this.houses.forEach((e) => {
+        if (e.aptName == aptName) {
+          let lat = parseFloat(e.lat);
+          let lng = parseFloat(e.lng);
+          this.infoWindow = new kakao.maps.InfoWindow({
+            position: new kakao.maps.LatLng(lat, lng),
+            content: e.aptName,
+          });
+          this.markers.forEach((mk) => {
+            if (mk.getTitle() == e.aptName) {
+              this.infoWindow.open(this.map, mk);
+              this.map.panTo(mk.getPosition());
+            }
+          });
+          console.log(this.infoWindow);
+        }
+      });
     },
   },
 

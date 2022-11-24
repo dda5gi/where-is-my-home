@@ -18,4 +18,13 @@ function houseList(params, success, fail) {
   api.get(`/apt/list`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList };
+function dealList(params, success, fail) {
+  api.get(`/apt/deal`, { params: params }).then(success).catch(fail);
+}
+
+function favorList(success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  api.get(`/region/favor/list`).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, dealList, favorList };

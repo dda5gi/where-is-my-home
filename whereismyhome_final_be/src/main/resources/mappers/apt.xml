@@ -4,9 +4,15 @@
 <mapper namespace="com.ssafy.home.apt.mapper.AptMapper">
 
 	<select id="getAptList" resultType="aptDto">
-		select apartmentName as aptName, dong, jibun, lat, lng
+		select apartmentName as aptName, aptCode, dong, jibun, lat, lng
 		from houseinfo
 		where
 		dongCode = #{dongCode}
+	</select>
+	
+	<select id="getDealList" resultType="dealDto">
+		SELECT dealAmount, dealYear, dealMonth, dealDay, AREA FROM housedeal
+		WHERE aptCode = #{aptCode}
+		ORDER BY CAST(area AS DECIMAL(10, 2)) , dealYear, dealMonth, dealDay
 	</select>
 </mapper>
