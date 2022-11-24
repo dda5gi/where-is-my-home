@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main id="map-vmain">
     <map-house-search></map-house-search>
     <v-container>
       <v-row>
@@ -156,9 +156,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #map {
   width: 100%;
   height: 700px;
+}
+#map-vmain {
+  background-color: white;
 }
 </style>

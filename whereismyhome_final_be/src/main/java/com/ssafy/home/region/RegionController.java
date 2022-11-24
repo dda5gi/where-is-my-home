@@ -81,7 +81,7 @@ public class RegionController {
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("/favor")
+	@GetMapping("/favor")
 	public ResponseEntity<ResponseDto> registerFavorRegion(@RequestParam String dongCode, HttpServletRequest req) {
 		logger.info("즐겨찾기 등록");
 		ResponseDto responseDto = new ResponseDto();
@@ -102,7 +102,7 @@ public class RegionController {
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("/favor/delete")
+	@GetMapping("/favor/delete")
 	public ResponseEntity<ResponseDto> deleteFavorRegion(@RequestParam String dongCode, HttpServletRequest req) {
 		logger.info("즐겨찾기 삭제");
 		ResponseDto responseDto = new ResponseDto();

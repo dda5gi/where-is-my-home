@@ -27,4 +27,14 @@ function favorList(success, fail) {
   api.get(`/region/favor/list`).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList, dealList, favorList };
+function registerFavor(params, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  api.get(`/region/favor`, { params: params }).then(success).catch(fail);
+}
+
+function deleteFavor(params, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  api.get(`/region/favor/delete`, { params: params }).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, dealList, favorList, registerFavor, deleteFavor };
