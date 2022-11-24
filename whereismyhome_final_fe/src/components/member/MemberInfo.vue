@@ -1,142 +1,85 @@
 <template>
-  <div>
+  <v-main>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-5>
         <h1>회원 정보</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
-        <v-card class="mx-auto">
-          <v-img
-            class="white--text align-end"
-            height="250px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-          >
-          </v-img>
-          <div class="mx-4 mt-2" v-show="isDelete === false">
-            <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === false">
-              <h3 class="my-2 grey--text" v-if="member.type === 'admin'">[관리자]</h3>
-              <div class="mt-3"><b>이름:</b> {{ member.name }}</div>
-              <div class="mt-1"><b>아이디:</b> {{ member.id }}</div>
-            </v-card-text>
-            <v-card-text class="text--primary text-left mx-3" v-show="this.isModify === true">
-              <h3 class="my-2 grey--text" v-show="member.type === 'admin'">[관리자]</h3>
-              <v-text-field class="pe-6" label="이름" v-model="member.name"></v-text-field>
-              <v-text-field class="pe-6" label="아이디" v-model="member.id"></v-text-field>
-              <v-text-field
-                class="pe-6"
-                label="현재 비밀번호"
-                type="password"
-                v-model="member.pwd"
-              ></v-text-field>
-              <v-text-field
-                class="pe-6"
-                label="새로운 비밀번호"
-                type="password"
-                v-model="new_pwd"
-              ></v-text-field>
-              <v-text-field
-                class="pe-6"
-                label="새로운 비밀번호 확인"
-                type="password"
-                v-model="new_pwd_check"
-              ></v-text-field>
-            </v-card-text>
-          </div>
-          <div class="mx-4 mt-2" v-show="isDelete === true">
-            <v-card-text class="text--primary text-left mx-3">
-              <h3 class="my-2 grey--text" v-show="member.type === 'admin'">[관리자]</h3>
-              <div><b>아이디:</b> {{ member.id }}</div>
-              <v-text-field
-                class="pe-6"
-                label="비밀번호"
-                type="password"
-                v-model="member.pwd"
-              ></v-text-field>
-            </v-card-text>
-          </div>
-          <v-card-actions class="mx-3 mb-2">
-            <div v-show="isDelete === false">
-              <v-container v-show="this.isModify === false">
-                <v-btn color="orange" text @click="showModify"> 수정 </v-btn>
-                <v-btn color="red" text @click="showDelete"> 탈퇴 </v-btn>
-              </v-container>
-              <v-container v-show="this.isModify === true">
-                <v-btn color="orange" text @click.prevent="modifyMember"> 수정 </v-btn>
-                <v-btn color="grey" text @click="closeModify"> 취소 </v-btn>
-              </v-container>
-            </div>
-            <div v-show="isDelete === true">
-              <v-container>
-                <v-btn color="orange" text @click.prevent="doDeleteMember"> 탈퇴 </v-btn>
-                <v-btn color="grey" text @click="closeDelete"> 취소 </v-btn>
-              </v-container>
-            </div>
-          </v-card-actions>
-        </v-card>
+        <div v-if="!isPasswordChecked">
+          <v-card class="mx-auto" max-width="35rem" ref="form">
+            <v-form ref="entryForm" @submit.prevent="save">
+              <v-card-text>
+                개인 정보 조회를 위해서는 인증이 필요합니다.<br />
+                비밀번호 입력 후 확인 버튼을 클릭해 주세요
+                <v-text-field
+                  class="mt-6"
+                  color="#6768ab"
+                  v-model="password"
+                  type="password"
+                  label="비밀번호"
+                  outlined
+                  required
+                  :rules="rules"
+                  :error-messages="errorMessages"
+                ></v-text-field>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="mb-3" color="#6768ab" dark type="submit">확인</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </div>
+        <div v-else>
+          <member-info-item v-show="this.showMode === 'info'"></member-info-item>
+          <member-info-modify v-show="this.showMode === 'modify'"></member-info-modify>
+          <member-info-delete v-show="this.showMode === 'delete'"></member-info-delete>
+        </div>
       </v-flex>
     </v-layout>
-  </div>
+  </v-main>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+import MemberInfoModify from "@/components/member/MemberInfoModify.vue";
+import MemberInfoItem from "@/components/member/MemberInfoItem.vue";
+import MemberInfoDelete from "@/components/member/MemberInfoDelete.vue";
 
 const memberStore = "memberStore";
 
 export default {
   name: "MemberInfo",
 
+  components: { MemberInfoModify, MemberInfoItem, MemberInfoDelete },
+
   data() {
     return {
-      member: {},
-      new_pwd: "",
-      new_pwd_check: "",
-      isDelete: false,
+      password: "",
+      rules: [(v) => !!v || "비밀번호를 입력해주세요."],
+      errorMessages: "",
+      isPasswordChecked: false,
     };
   },
 
-  created() {
-    this.SET_MODIFY_MODE(false);
-    this.member = { ...this.memberInfo };
-  },
-
   computed: {
-    ...mapState(memberStore, ["isModify", "memberInfo"]),
+    ...mapState(memberStore, ["isCorrectPassword", "showMode"]),
   },
 
   methods: {
-    ...mapMutations(memberStore, ["SET_MODIFY_MODE"]),
-    ...mapActions(memberStore, ["getMemberInfo", "deleteMember"]),
+    ...mapActions(memberStore, ["checkPassword"]),
 
-    showModify() {
-      this.SET_MODIFY_MODE(true);
-    },
+    async save() {
+      if (this.$refs.entryForm.validate()) {
+        console.log("password", this.password);
+        await this.checkPassword(this.password);
 
-    closeModify() {
-      this.member = { ...this.memberInfo };
-      this.new_pwd = "";
-      this.SET_MODIFY_MODE(false);
-    },
-
-    showDelete() {
-      this.isDelete = true;
-    },
-
-    closeDelete() {
-      this.member = { ...this.memberInfo };
-      this.isDelete = false;
-    },
-
-    async modifyMember() {
-      console.log("modify Member");
-      let accessToken = sessionStorage.getItem("access-token");
-      await this.getMemberInfo(accessToken);
-    },
-
-    async doDeleteMember() {
-      console.log("delete Member");
-      await this.deleteMember(this.member);
-      this.$router.push({ name: "main" });
+        if (!this.isCorrectPassword) {
+          this.errorMessages = "비밀번호가 틀렸습니다.";
+        }
+        this.isPasswordChecked = this.isCorrectPassword;
+      }
     },
   },
 };

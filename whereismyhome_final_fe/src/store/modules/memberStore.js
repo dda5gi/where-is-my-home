@@ -9,7 +9,8 @@ const memberStore = {
     isLoginError: false,
     memberInfo: null,
     isValidToken: false,
-    isModify: false,
+    isCorrectPassword: false,
+    showMode: "info",
   },
   getters: {},
   mutations: {
@@ -25,8 +26,11 @@ const memberStore = {
     SET_MEMBER_INFO: (state, memberInfo) => {
       state.memberInfo = memberInfo;
     },
-    SET_MODIFY_MODE: (state, mode) => {
-      state.isModify = mode;
+    SET_SHOW_MODE: (state, mode) => {
+      state.showMode = mode;
+    },
+    SET_IS_CORRECT_PASSWORD: (state, flag) => {
+      state.isCorrectPassword = flag;
     },
   },
   actions: {
@@ -66,10 +70,7 @@ const memberStore = {
           }
         },
         async (error) => {
-          console.log(
-            "getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status
-          );
+          console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }
@@ -128,10 +129,7 @@ const memberStore = {
         },
         async (error) => {
           if (error.response.status === 401) {
-            console.log(
-              "getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-              error.response.status
-            );
+            console.log("getMemberInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
             commit("SET_IS_VALID_TOKEN", false);
             await dispatch("tokenRegenerationWithOutLogIn");
           } else {
@@ -222,6 +220,29 @@ const memberStore = {
             dispatch("memberLogout");
           } else {
             console.log("탈퇴 실패");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    async checkPassword({ state, commit }, password) {
+      await login(
+        { id: state.memberInfo.id, pwd: password },
+        ({ data }) => {
+          if (data.message === "success") {
+            let accessToken = data["access-token"];
+            let refreshToken = data["refresh-token"];
+            commit("SET_IS_LOGIN", true);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_IS_VALID_TOKEN", true);
+            commit("SET_IS_CORRECT_PASSWORD", true);
+            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("refresh-token", refreshToken);
+          } else {
+            commit("SET_IS_CORRECT_PASSWORD", false);
           }
         },
         (error) => {
