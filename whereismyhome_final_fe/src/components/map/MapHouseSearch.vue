@@ -58,4 +58,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+div.col {
+  padding: 12px, 12px, 0px, 12px;
+}
+</style>

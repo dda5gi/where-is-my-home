@@ -1,11 +1,10 @@
 <template>
   <v-main>
-    <!-- <router-view class="container"></router-view> -->
     <map-house-search></map-house-search>
     <v-container>
       <v-row>
         <v-col cols="4">
-          <h1>아파트 목록</h1>
+          <h2>아파트 목록</h2>
           <v-divider></v-divider>
           <map-house-list></map-house-list>
         </v-col>
@@ -44,7 +43,6 @@ export default {
 
   watch: {
     houses(newHouses) {
-      console.log("HOUSE DATA WATCH CALLED");
       if (newHouses.length > 0) {
         this.removeMarkers();
         this.loadMarkers(newHouses);
@@ -64,6 +62,7 @@ export default {
     },
 
     removeMarkers() {
+      // 마커 지우기
       if (this.markers.length > 0) {
         this.markers.forEach((m) => {
           m.setMap(null);
@@ -73,7 +72,6 @@ export default {
 
     loadMarkers(houses) {
       // 아파트 정보 불러온 마커에서 쓸 수 있게 변환
-      console.log("UPDATE_MARKERS CALLED");
       console.log(houses);
       this.markerDatas = [];
       houses.forEach((element) => {

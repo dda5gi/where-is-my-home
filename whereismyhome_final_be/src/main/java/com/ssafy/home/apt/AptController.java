@@ -1,7 +1,13 @@
 package com.ssafy.home.apt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +48,11 @@ public class AptController {
 	public ResponseEntity<ResponseDto> getAptDeal(@RequestParam String aptCode) throws Exception{
 		logger.info("아파트 면적 별 거래 기록 호출");
 		ResponseDto responseDto = new ResponseDto();
+		// 아파트 거래기록 호출
 		ArrayList<DealDto> list = (ArrayList<DealDto>) aptService.getDealList(aptCode);
 
-		HashMap<String, ArrayList<HashMap<String, Object>>> hm = new HashMap<>();
+		// "면적" : [ {날짜, 가격}, { }, { } .. ] 형태로 변환하기
+		Map<String, ArrayList<HashMap<String, Object>>> hm = new HashMap<>();
 		for(DealDto deal : list) {
 			if(hm.get(deal.getArea())== null) {
 				hm.put(deal.getArea(), new ArrayList<HashMap<String, Object>>());
@@ -59,14 +67,32 @@ public class AptController {
 			tm.put("date", year + "-" + month + "-" + day);
 			hm.get(deal.getArea()).add(tm);
 		}
-		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+		ArrayList<String> areas = new ArrayList<String>();
 		for(String key : hm.keySet()) {
-			HashMap<String, Object> tmp = new HashMap<String, Object>();
-			tmp.put("area", key);
-			tmp.put("deals", hm.get(key));
-			result.add(tmp);
+			areas.add(key);
 		}
-		responseDto.addPayload("list", result);
+		// 면적 순서대로 리스트화
+//		List<Entry<String, ArrayList<HashMap<String, Object>>>> result = new ArrayList<Entry<String, ArrayList<HashMap<String, Object>>>>(hm.entrySet());
+//		// 면적 순서대로 정렬하기
+//		Collections.sort(result, new Comparator<Entry<String, ArrayList<HashMap<String, Object>>>>() {
+//			public int compare(Entry<String, ArrayList<HashMap<String, Object>>> obj1, Entry<String, ArrayList<HashMap<String, Object>>> obj2) {
+//				float a = Float.parseFloat(obj1.getKey());
+//				float b = Float.parseFloat(obj2.getKey());
+//				if(a < b) return -1;
+//				else return 1;
+//			}
+//		});
+		
+//		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+//		for(String key : hm.keySet()) {
+//			HashMap<String, Object> tmp = new HashMap<String, Object>();
+//			tmp.put("area", key);
+//			tmp.put("deals", hm.get(key));
+//			result.add(tmp);
+//		}
+		
+		responseDto.addPayload("areas", areas);
+		responseDto.addPayload("list", hm);
 		responseDto.setMsg(SUCCESS);
 		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.ACCEPTED);
 	}

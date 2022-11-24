@@ -1,6 +1,6 @@
 <template>
   <v-container style="height: 650px; overflow-y: scroll" v-if="houses && houses.length != 0">
-    <map-house-list-item v-for="(house, index) in houses" :key="index" :house="house"></map-house-list-item>
+    <map-house-list-item v-for="house in houses" :key="house.aptCode" :house="house"></map-house-list-item>
   </v-container>
 </template>
 
@@ -20,9 +20,6 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["houses"]),
-    // houses() {
-    //   return this.$store.state.houses;
-    // },
   },
 };
 </script>
