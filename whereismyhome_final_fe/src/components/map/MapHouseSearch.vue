@@ -1,14 +1,48 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <v-overflow-btn filled v-model="sidoCode" :items="sidos" @change="gugunList"></v-overflow-btn>
+    <v-row align="center">
+      <v-col cols="1">
+        <!-- <v-subheader><h3>지역 선택 :</h3></v-subheader> -->
+        <h3>지역 선택 :</h3>
       </v-col>
-      <v-col>
-        <v-overflow-btn filled v-model="gugunCode" :items="guguns" @change="dongList"></v-overflow-btn>
+      <v-col cols="2">
+        <v-overflow-btn v-model="sidoCode" :items="sidos" @change="gugunList"></v-overflow-btn>
       </v-col>
-      <v-col>
-        <v-overflow-btn filled v-model="dongCode" :items="dongs" @change="searchHouse"></v-overflow-btn>
+      <v-col cols="2">
+        <v-overflow-btn v-model="gugunCode" :items="guguns" @change="dongList"></v-overflow-btn>
+      </v-col>
+      <v-col cols="2">
+        <v-overflow-btn v-model="dongCode" :items="dongs" @change="searchHouse"></v-overflow-btn>
+      </v-col>
+      <v-col cols="1">
+        <v-btn>즐겨찾기</v-btn>
+      </v-col>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
+      <v-col cols="1">
+        <h3>즐겨찾기 :</h3>
+      </v-col>
+      <v-col cols="3">
+        <v-container style="height: 100px; overflow-y: scroll">
+          <v-list>
+            <v-list-item>
+              <v-list-item-content>서울 중구 중구가시키드나</v-list-item-content>
+              <v-list-item-action>
+                <v-btn>
+                  <v-icon color="grey lighten-1">delete</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+            <v-list-item>더미</v-list-item>
+            <v-list-item>더미</v-list-item>
+          </v-list>
+        </v-container>
       </v-col>
     </v-row>
   </v-container>

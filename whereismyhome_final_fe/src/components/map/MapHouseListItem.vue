@@ -10,7 +10,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text>위치보기</v-btn>
+          <v-btn color="blue darken-1" text @click="highLightMarker(house.aptName)">위치보기</v-btn>
           <v-btn color="orange darken-1" text @click="expandPanel">거래내역</v-btn>
         </v-card-actions>
         <v-expand-transition>
@@ -75,6 +75,12 @@ export default {
     house: Object,
   },
   methods: {
+    // 현재 아파트에 해당하는 마커 하이라이트 -> emit 2번으로 AppMap까지 도달
+    highLightMarker(aptName) {
+      this.$emit("highLightMarker", aptName);
+    },
+
+    // 거래내역 패널 펼치기
     expandPanel() {
       this.show = !this.show;
       if (this.show) {
@@ -82,12 +88,20 @@ export default {
       }
     },
 
+    // 아파트에 해당하는 거래내역 서버에 요청
     loadAreaDealList() {
       const params = { aptCode: this.house.aptCode };
       dealList(
         params,
         ({ data }) => {
           this.data = data.payload;
+          this.data.areas.sort(function (a, b) {
+            a = parseFloat(a);
+            b = parseFloat(b);
+            if (a > b) return 1;
+            else return -1;
+          });
+
           console.log(this.data);
         },
         (error) => {
@@ -96,6 +110,7 @@ export default {
       );
     },
 
+    // 차트 그리기, chartData를 리셋하고 값을 넣는다.
     drawChart(area) {
       this.chartData.datasets[0].data = [];
       this.chartData.labels = [];

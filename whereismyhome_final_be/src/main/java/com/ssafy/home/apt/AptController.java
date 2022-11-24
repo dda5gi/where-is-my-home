@@ -51,7 +51,6 @@ public class AptController {
 		// 아파트 거래기록 호출
 		ArrayList<DealDto> list = (ArrayList<DealDto>) aptService.getDealList(aptCode);
 
-		// "면적" : [ {날짜, 가격}, { }, { } .. ] 형태로 변환하기
 		Map<String, ArrayList<HashMap<String, Object>>> hm = new HashMap<>();
 		for(DealDto deal : list) {
 			if(hm.get(deal.getArea())== null) {
@@ -71,25 +70,6 @@ public class AptController {
 		for(String key : hm.keySet()) {
 			areas.add(key);
 		}
-		// 면적 순서대로 리스트화
-//		List<Entry<String, ArrayList<HashMap<String, Object>>>> result = new ArrayList<Entry<String, ArrayList<HashMap<String, Object>>>>(hm.entrySet());
-//		// 면적 순서대로 정렬하기
-//		Collections.sort(result, new Comparator<Entry<String, ArrayList<HashMap<String, Object>>>>() {
-//			public int compare(Entry<String, ArrayList<HashMap<String, Object>>> obj1, Entry<String, ArrayList<HashMap<String, Object>>> obj2) {
-//				float a = Float.parseFloat(obj1.getKey());
-//				float b = Float.parseFloat(obj2.getKey());
-//				if(a < b) return -1;
-//				else return 1;
-//			}
-//		});
-		
-//		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
-//		for(String key : hm.keySet()) {
-//			HashMap<String, Object> tmp = new HashMap<String, Object>();
-//			tmp.put("area", key);
-//			tmp.put("deals", hm.get(key));
-//			result.add(tmp);
-//		}
 		
 		responseDto.addPayload("areas", areas);
 		responseDto.addPayload("list", hm);
