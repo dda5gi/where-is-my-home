@@ -72,7 +72,6 @@ export default {
 
     async save() {
       if (this.$refs.entryForm.validate()) {
-        console.log("password", this.password);
         await this.checkPassword(this.password);
 
         if (!this.isCorrectPassword) {
