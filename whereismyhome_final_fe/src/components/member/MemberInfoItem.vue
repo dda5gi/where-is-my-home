@@ -7,12 +7,12 @@
         <div class="mt-1"><b>아이디:</b> {{ this.memberInfo.id }}</div>
       </v-card-text>
       <div id="button-container" class="d-flex">
-        <v-btn class="font-weight-bold" text color="#6667AB" @click.prevent="showModify">수정</v-btn>
+        <v-btn class="font-weight-bold" text color="#6667AB" @click.prevent="showModify"
+          >수정</v-btn
+        >
         <v-btn class="font-weight-bold" text color="#686369">탈퇴</v-btn>
       </div>
     </div>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-subtitle>관심 지역 목록(카드형)</v-card-subtitle>
   </v-card>
 </template>
 
